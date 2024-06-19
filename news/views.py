@@ -6,11 +6,14 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.http import JsonResponse
 
-from .models import User
+from .models import User, Section, Article, Author, Comment, Image
 # Create your views here.
 
 def index(request):
-    return render(request, "news/index.html")
+    all_articles = Article.objects.order_by('-date').all()
+    return render(request, "news/homepage.html", {
+        "all_articles" : all_articles
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -23,7 +26,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("homepage"))
         else:
             return render(request, "news/login.html", {
                 "message": "Invalid username and/or password."
@@ -34,7 +37,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("homepage"))
 
 
 def register(request):
@@ -59,6 +62,6 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("homepage"))
     else:
         return render(request, "news/register.html")

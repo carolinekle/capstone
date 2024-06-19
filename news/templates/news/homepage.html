@@ -1,0 +1,21 @@
+{% extends "news/layout.html" %}
+
+{% block body %}
+
+<div>
+  {% for article in all_articles %}
+  <div class="card" style="width: 18rem;">
+    {% for img in artile %}
+    <img src="{{ img.image.url }}" >
+{% endfor %}
+    <img class="card-img-top" src="{{ima.main.url}}" class="img-thumbnail"></img>
+    <div class="card-body">
+        <h2 class="card-title">{{ article.headline }}</h2>
+        <small class="card-text">{{ article.deck }}</small>
+        <bold class="card-text">{{ article.byline }}</bold>
+    </div>
+</div>
+  {% endfor %}
+</div>
+
+{% endblock %}
