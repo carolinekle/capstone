@@ -1,0 +1,23 @@
+.hero-img{
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+.section-wrapper{
+    background-color: khaki;
+}
+
+div.section-wrapper > ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
+}
+
+#section-1{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-around;
+}

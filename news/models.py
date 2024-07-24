@@ -35,6 +35,9 @@ class Article(models.Model):
     content = models.TextField(blank=False, max_length=10000)
     section = models.ManyToManyField(Section)
     update_lang = models.DateTimeField(blank=True, null=True)
+    is_hero = models.BooleanField(default=False)  
+    hero_priority = models.IntegerField(default=100) 
+
 
     def __str__(self):
         return f"{self.headline} by {self.byline}"

@@ -5,14 +5,20 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import JsonResponse
+from django.contrib.staticfiles.apps import StaticFilesConfig
+
 
 from .models import User, Section, Article, Author, Comment, Image
 # Create your views here.
 
 def index(request):
     all_articles = Article.objects.order_by('-date').all()
+    all_sections = Section.objects.all()
+    hero_articles = Article.objects.filter(is_hero=True).order_by('hero_priority')  
     return render(request, "news/homepage.html", {
-        "all_articles" : all_articles
+        "all_articles" : all_articles,
+        "all_sections": all_sections,
+        "hero_articles":hero_articles
     })
 
 def login_view(request):
