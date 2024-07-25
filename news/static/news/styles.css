@@ -21,3 +21,11 @@ div.section-wrapper > ul{
     align-content: center;
     justify-content: space-around;
 }
+
+.footer{
+    display: flex;
+    height: 2em;
+    width: 100vw;
+    align-content: center;
+    justify-content: center;
+}
