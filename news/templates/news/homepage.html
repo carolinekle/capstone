@@ -20,7 +20,7 @@
 <div class="section-wrapper">
     <ul class="sections">
     {% for section in all_sections%}
-    <li><a href="">{{ section.section_name }}</a></li>
+    <li><a href="{{section.url_name}}">{{ section.section_name }}</a></li>
     {%endfor%}
     </ul>
 </div>
@@ -35,7 +35,7 @@
         <h2 class="card-title">{{ article.headline }}</h2>
         <small>from: 
           {% for section in article.section.all %}
-            {{ section.section_name }}{% if not forloop.last %}, {% endif %}
+          <a href="{% url section.url_name %}">{{ section.section_name }}</a>{% if not forloop.last %}, {% endif %}
           {% endfor %}
         </small><br>
         <small class="card-text">{{ article.deck }}</small> <br>

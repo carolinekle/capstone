@@ -1,0 +1,6 @@
+Django==4.2.5
+newsapi-python==0.2.7
+requests==2.32.3
+numpy==1.24.4
+Pillow==9.5.0
+imageio==2.31.1
