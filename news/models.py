@@ -6,10 +6,18 @@ from django.db import models
 class User(AbstractUser):
     pass
 
+class Subsection(models.Model):
+    subsection_name = models.CharField(max_length=20)
+    sub_url_name = models.URLField(max_length=20, null=True)
+
+    def __str__(self):
+        return f"{self.subsection_name}"
 
 class Section(models.Model):
     section_name = models.CharField(max_length=50)
-    url_name = models.CharField(max_length=50)
+    section_url_name = models.URLField(max_length=50, null=True)
+    sub_sections= models.ManyToManyField(Subsection)
+
 
     def __str__(self):
         return f"{self.section_name}"
@@ -32,9 +40,11 @@ class Article(models.Model):
     byline = models.ForeignKey(Author,null=True, on_delete=models.SET_NULL)
     deck = models.CharField(max_length=240, blank=False)
     slug = models.SlugField(unique=True)
+    url = models.URLField(max_length=40, unique=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     content = models.TextField(blank=False, max_length=10000)
     section = models.ManyToManyField(Section)
+    updated_at = models.DateTimeField(blank=True, null=True)
     update_lang = models.DateTimeField(blank=True, null=True)
     is_hero = models.BooleanField(default=False)  
     hero_priority = models.IntegerField(default=100) 
