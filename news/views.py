@@ -4,10 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse
 from django.contrib.staticfiles.apps import StaticFilesConfig
+
 
 from newsapi import NewsApiClient
 
@@ -17,15 +18,25 @@ from .models import User, Section, Article, Author, Comment, Image
 newsapi = NewsApiClient(api_key='os.getenv(API_KEY)')
 
 def index(request):
-    all_articles = Article.objects.order_by('-date').all()
+    all_articles = Article.objects.filter(is_published=True).order_by('-date').all()
     all_sections = Section.objects.all()
-    hero_articles = Article.objects.filter(is_hero=True).order_by('hero_priority')  
+    hero_articles = Article.objects.filter(is_hero=True)
     return render(request, "news/homepage.html", {
         "all_articles" : all_articles,
         "all_sections": all_sections,
-        "hero_articles":hero_articles
+        "hero_articles": hero_articles
     })
 
+def article_details(request, section_url_name, url):
+    section = get_object_or_404(Section, section_url_name=section_url_name)
+    article = get_object_or_404(Article, url=url, section=section)
+    return render(request, "news/article.html", {
+        "article": article,
+        "section": section
+    })
+
+def section(request, section_url_name):
+    return
 
 def fetch_news(query, language='en', page_size=5):
     url = 'https://newsapi.org/v2/everything'
