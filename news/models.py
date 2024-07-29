@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.text import slugify 
 
 # Create your models here.
 
@@ -8,16 +9,14 @@ class User(AbstractUser):
 
 class Subsection(models.Model):
     subsection_name = models.CharField(max_length=20)
-    sub_url_name = models.URLField(max_length=20, null=True)
+    sub_url_name = models.SlugField(max_length=20, null=True)
 
     def __str__(self):
         return f"{self.subsection_name}"
 
 class Section(models.Model):
     section_name = models.CharField(max_length=50)
-    section_url_name = models.URLField(max_length=50, null=True)
-    sub_sections= models.ManyToManyField(Subsection)
-
+    section_url_name = models.SlugField(max_length=50, null=True, unique=True)
 
     def __str__(self):
         return f"{self.section_name}"
@@ -40,14 +39,20 @@ class Article(models.Model):
     byline = models.ForeignKey(Author,null=True, on_delete=models.SET_NULL)
     deck = models.CharField(max_length=240, blank=False)
     slug = models.SlugField(unique=True)
-    url = models.URLField(max_length=40, unique=True, null=True)
+    url = models.SlugField(max_length=40, unique=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     content = models.TextField(blank=False, max_length=10000)
-    section = models.ManyToManyField(Section)
+    section = models.ForeignKey(Section, null=True, on_delete=models.PROTECT)
     updated_at = models.DateTimeField(blank=True, null=True)
     update_lang = models.DateTimeField(blank=True, null=True)
     is_hero = models.BooleanField(default=False)  
     hero_priority = models.IntegerField(default=100) 
+    is_published = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.url:
+            self.url = slugify(self.headline)
+        super().save(*args, **kwargs)
 
 
     def __str__(self):
