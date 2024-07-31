@@ -3,11 +3,11 @@
 {% block body %}
 
 <h3>{{ section.section_name }}</h3>
-<img src="{{ article.main.path }}">
+<img class="hero-img" src="{{ article.main.image.url }}"> 
     <h1>{{ article.headline }}</h1>
 <p>{{ article.deck }}</p>
 <small>{{ article.byline }}</small>
-<p>{{ article.content }}</p>
+<p class="text">{{ article.content }}</p>
 
 
 {% endblock %}
