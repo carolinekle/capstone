@@ -4,9 +4,7 @@
 <div class="hero-section">
   {% for article in hero_articles %}
   <div class="hero-article">
-    {% for img in article.main.all %}
-    <img src="{{ img.image.url }}" class="hero-img">
-    {% endfor %}
+    <img src="{{ article.main.image.url }}" class="hero-img">
     <div class="hero-content">
       <h1>{{ article.headline }}</h1>
       <p>{{ article.deck }}</p>
@@ -29,9 +27,9 @@
   {% for article in all_articles %}
   <div class="card" style="width: 18rem;">
     <a href="{% url 'article_details' article.section.section_url_name article.url %}">  
-      {% for img in article.main.all %}
-      <img class="card-img-top" src="{{ img.image.url }}" class="img-thumbnail">
-      {% endfor %}
+      {% if article.main %}
+      <img class="card-img-top" src="{{ article.main.image.url  }}" class="img-thumbnail">
+      {% endif %}
       <div class="card-body">
           <h2 class="card-title">{{ article.headline }}</h2>
           <small>from: 
@@ -39,9 +37,6 @@
               {{ article.section.section_name }}
             </a>
           </small><br>
-          <h4>{{ article.slug }}</h4>
-          <br>
-          <h4>{{ article.url }}</h4>
           <small class="card-text">{{ article.deck }}</small> <br>
           <small><a href="#">{{ article.byline }}</a></small>
       </div>

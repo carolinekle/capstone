@@ -35,7 +35,7 @@ class Image(models.Model):
 # image
 class Article(models.Model):
     headline = models.CharField(max_length=50, blank=False, unique_for_date="date")
-    main = models.ManyToManyField(Image)
+    main = models.ForeignKey(Image, null=True, on_delete=models.PROTECT)
     byline = models.ForeignKey(Author,null=True, on_delete=models.SET_NULL)
     deck = models.CharField(max_length=240, blank=False)
     slug = models.SlugField(unique=True)
