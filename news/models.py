@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify 
+from tinymce import HTMLField
 
 # Create your models here.
 
@@ -41,7 +42,7 @@ class Article(models.Model):
     slug = models.SlugField(unique=True)
     url = models.SlugField(max_length=40, unique=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    content = models.TextField(blank=False, max_length=10000)
+    content = HTMLField
     section = models.ForeignKey(Section, null=True, on_delete=models.PROTECT)
     updated_at = models.DateTimeField(blank=True, null=True)
     update_lang = models.DateTimeField(blank=True, null=True)
