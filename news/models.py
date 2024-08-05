@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify 
-from tinymce import HTMLField
+from tinymce.models import HTMLField
 
 # Create your models here.
 
