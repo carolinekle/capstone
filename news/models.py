@@ -41,8 +41,8 @@ class Article(models.Model):
     deck = models.CharField(max_length=240, blank=False)
     slug = models.SlugField(unique=True)
     url = models.SlugField(max_length=40, unique=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
-    content = HTMLField
+    date = models.DateTimeField(auto_now_add=False, null=True)
+    content = HTMLField()
     section = models.ForeignKey(Section, null=True, on_delete=models.PROTECT)
     updated_at = models.DateTimeField(blank=True, null=True)
     update_lang = models.DateTimeField(blank=True, null=True)
