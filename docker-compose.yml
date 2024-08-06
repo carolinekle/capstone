@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000 --settings=capstone.news_settings
     volumes:
       - .:/usr/src/app
     ports:
@@ -13,7 +13,7 @@ services:
   
   cms: 
     build: .
-    command: python manage.py runserver 0.0.0.0:8001
+    command: python manage.py runserver 0.0.0.0:8001 --settings=capstone.cms_settings
     volumes:
       - .:/usr/src/app
     ports:
