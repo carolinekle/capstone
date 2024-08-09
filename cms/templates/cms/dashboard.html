@@ -3,12 +3,12 @@
 {% block body %}
 
 <h1>CMS Dashboard</h1>
-<a href="{% url 'cms_create_article' %}">Create New Article</a>
+<a href="{% url 'create_article' %}">Create New Article</a>
 <ul>
   {% for article in articles %}
     <li>
-      <a href="{% url 'cms_edit_article' article.id %}">{{ article.headline }}</a>
-      <form action="{% url 'cms_delete_article' article.id %}" method="post" style="display:inline;">
+      <a href="{% url 'edit_article' article.id %}">{{ article.headline }}</a>
+      <form action="{% url 'delete_article' article.id %}" method="post" style="display:inline;">
         {% csrf_token %}
         <button type="submit">Delete</button>
       </form>

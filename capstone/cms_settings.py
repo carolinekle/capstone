@@ -1,7 +1,5 @@
 from .settings import *
 
-INSTALLED_APPS += [
-    'cms',
-]
+# Add any CMS-specific settings here
 
 ROOT_URLCONF = 'cms.urls'
