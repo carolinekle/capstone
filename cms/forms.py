@@ -1,5 +1,5 @@
 from django import forms
-from news.models import Article, Author, Image, Section
+from news.models import Article, Author, Image, Section, User
 
 class ArticleForm(forms.ModelForm):
     class Meta:
@@ -20,3 +20,8 @@ class SectionForm(forms.ModelForm):
     class Meta:
         model = Section
         fields = ['section_name','section_url_name']
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = "__all__"

@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  web:
+  news:
     build: .
     command: python manage.py runserver 0.0.0.0:8000 --settings=capstone.news_settings
     volumes:

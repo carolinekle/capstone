@@ -1,7 +1,6 @@
 from .settings import *
 
-INSTALLED_APPS += [
-    'news',
-]
+# Add any news-specific settings here
+
 
 ROOT_URLCONF = 'news.urls'
