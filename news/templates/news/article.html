@@ -7,7 +7,7 @@
     <h1>{{ article.headline }}</h1>
 <p>{{ article.deck }}</p>
 <small>{{ article.byline }}</small>
-<p class="text">{{ article.content }}</p>
+{{ article.content | safe }}
 
 
 {% endblock %}

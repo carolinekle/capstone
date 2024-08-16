@@ -36,7 +36,16 @@ def article_details(request, section_url_name, url):
     })
 
 def section(request, section_url_name):
-    return
+    section = get_object_or_404(Section, section_url_name=section_url_name)
+
+    if section == "news":
+        return load_news(request)
+    else: 
+        section_articles = Article.objects.filter(section=section)
+        return render(request, "news/section-front.html",{
+            "section":section,
+            "section_articles":section_articles
+        })
 
 def fetch_news(query, language='en', page_size=5):
     url = 'https://newsapi.org/v2/everything'
@@ -57,11 +66,6 @@ def load_news(request):
     return render(request, 'news/news.html', {
         'news_articles': news_articles
         })
-
-def page_not_found(request):
-    return
-def electric_drama(request):
-    return
 
 def login_view(request):
     if request.method == "POST":
