@@ -6,7 +6,7 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['headline', 'main', 'byline', 'deck', 'slug', 'url', 'date', 'content', 'section', 'updated_at', 'update_lang', 'is_hero', 'hero_priority', 'is_published']
-        widgets = {'content': TinyMCE(attrs={'id': 'content-field'})}
+        widgets = {'content': TinyMCE(attrs={'id': 'content-field','cols': 80, 'rows': 30})}
 
 class AuthorForm(forms.ModelForm):
     class Meta:
