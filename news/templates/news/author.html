@@ -1,0 +1,24 @@
+{% extends "news/layout.html" %}
+
+{% block body %}
+
+<h3>{{ author.byline }}</h3>
+
+
+{%for article in author_articles%}
+  <div class="card" style="width: 18rem;">
+    <a href="{% url 'article_details' section.section_url_name article.url %}">  
+      <img class="card-img-top" src="{{ article.main.image.url  }}" class="img-thumbnail">
+      <div class="card-body">
+          <h2 class="card-title">{{ article.headline }}</h2>
+
+          <small class="card-text">{{ article.deck }}</small> <br>
+          <small><a href="#">{{ article.byline }}</a></small>
+      </div>
+    </a>
+  </div>
+{% endfor %}
+
+
+
+{% endblock %}

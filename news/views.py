@@ -47,6 +47,14 @@ def section(request, section_url_name):
             "section_articles":section_articles
         })
 
+def author_page(request, author_slug, ):
+    author = get_object_or_404(Author, author_slug=author_slug)
+    author_articles =Article.objects.filter(byline=author)
+    return render(request, "news/author.html",{
+        "author":author,
+        "author_articles":author_articles
+    })
+
 def fetch_news(query, language='en', page_size=5):
     url = 'https://newsapi.org/v2/everything'
     params = {

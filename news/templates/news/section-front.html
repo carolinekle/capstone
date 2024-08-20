@@ -7,7 +7,17 @@
 
 <ul>
 {%for section_article in section_articles%}
-<li>{{ section_article.headline }}</li>
+  <div class="card" style="width: 18rem;">
+    <a href="{% url 'article_details' section.section_url_name section_article.url %}">  
+      <img class="card-img-top" src="{{ section_article.main.image.url  }}" class="img-thumbnail">
+      <div class="card-body">
+          <h2 class="card-title">{{ section_article.headline }}</h2>
+
+          <small class="card-text">{{ section_article.deck }}</small> <br>
+          <small><a href="#">{{ section_article.byline }}</a></small>
+      </div>
+    </a>
+  </div>
 {% endfor %}
 </ul>
 
