@@ -18,8 +18,12 @@
 <div class="section-wrapper">
     <ul class="sections">
     {% for section in all_sections%}
-    <li><a href="{{section.section_url_name}}">{{ section.section_name }}</a></li>
-    {%endfor%}
+      <li>
+        <a href="{% url 'section' section.section_url_name %}">
+          {{ section.section_name }}
+      </a>
+      </li>
+    {% endfor %}
     </ul>
 </div>
 
@@ -33,6 +37,7 @@
         <a href="{% url 'article_details' article.section.section_url_name article.url %}">
           {{ article.headline }}
       </a>
+      <br>
           <small>from: 
             <a href="{% url 'section' article.section.section_url_name %}">
               {{ article.section.section_name }}

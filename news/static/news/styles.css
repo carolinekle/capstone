@@ -32,3 +32,12 @@ div.section-wrapper > ul{
     align-content: center;
     justify-content: center;
 }
+
+.article-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color: #606c38; 
+    color:beige;
+    margin: 0;
+}
