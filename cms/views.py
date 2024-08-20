@@ -18,6 +18,8 @@ from .forms import ArticleForm
 
 
 # Create your views here.
+
+
 def cms_dashboard(request):
     articles = Article.objects.all()
     return render(request, 'cms/dashboard.html', {

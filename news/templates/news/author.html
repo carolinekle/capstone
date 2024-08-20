@@ -5,12 +5,20 @@
 <h3>{{ author.byline }}</h3>
 
 
+{%if author.byline == user.username %}
+<span></span>
+{%else%}
+<button type="submit"class=" ml-3 btn btn-primary" id="follow" value= {{ author.id }}>Follow</button>
+{% endif %}
+
+
 {%for article in author_articles%}
   <div class="card" style="width: 18rem;">
-    <a href="{% url 'article_details' section.section_url_name article.url %}">  
+    <a href="{% url 'article_details' article.section.section_url_name article.url %}">  
       <img class="card-img-top" src="{{ article.main.image.url  }}" class="img-thumbnail">
       <div class="card-body">
           <h2 class="card-title">{{ article.headline }}</h2>
+    </a>
 
           <small class="card-text">{{ article.deck }}</small> <br>
           <small><a href="#">{{ article.byline }}</a></small>

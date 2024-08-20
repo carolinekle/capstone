@@ -12,7 +12,7 @@ from django.contrib.staticfiles.apps import StaticFilesConfig
 
 from newsapi import NewsApiClient
 
-from .models import User, Section, Article, Author, Comment, Image
+from .models import User, Section, Article, Author, Comment, Image, Following
 # Create your views here.
 
 newsapi = NewsApiClient(api_key='os.getenv(API_KEY)')
@@ -36,18 +36,17 @@ def article_details(request, section_url_name, url):
     })
 
 def section(request, section_url_name):
-    section = get_object_or_404(Section, section_url_name=section_url_name)
-
-    if section == "news":
+    if section_url_name == "news":
         return load_news(request)
     else: 
+        section = get_object_or_404(Section, section_url_name=section_url_name)
         section_articles = Article.objects.filter(section=section)
         return render(request, "news/section-front.html",{
             "section":section,
             "section_articles":section_articles
         })
 
-def author_page(request, author_slug, ):
+def author_page(request, author_slug):
     author = get_object_or_404(Author, author_slug=author_slug)
     author_articles =Article.objects.filter(byline=author)
     return render(request, "news/author.html",{
@@ -93,6 +92,33 @@ def login_view(request):
             })
     else:
         return render(request, "news/login.html")
+    
+def follow_status(request, author_id):
+    if request.user.is_authenticated:
+        following = request.user
+        author_followed = Author.objects.get(pk=author_id)
+        existing_follower = Following.objects.filter(user_following=following, author_followed=author_followed).exists()
+        return JsonResponse({"following": existing_follower})
+    else:
+        return JsonResponse({"following": False})
+
+def follow(request, author_id):
+    if request.method == "POST":
+        following = request.user
+        author_followed = Author.objects.get(pk=author_id)
+        existing_follower = Following.objects.filter(user_following=following, author_followed=author_followed).first()
+        if existing_follower:
+            existing_follower.delete()
+            return JsonResponse({"message":"unfollowed"})
+        else:
+            new_follow= Following(
+                user_following=following,
+                author_followed=author_followed
+            )
+            new_follow.save()
+            return JsonResponse({"message":"followed"})
+    elif json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON data"}, status=400)
 
 
 def logout_view(request):
