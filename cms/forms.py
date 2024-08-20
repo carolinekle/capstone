@@ -11,7 +11,7 @@ class ArticleForm(forms.ModelForm):
 class AuthorForm(forms.ModelForm):
     class Meta:
         model = Author
-        fields = ['author', 'author_bio']
+        fields = ['byline', 'author_bio','author_slug', 'pic']
 
 class ImageForm(forms.ModelForm):
     class Meta:

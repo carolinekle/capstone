@@ -21,29 +21,37 @@ class Section(models.Model):
 
     def __str__(self):
         return f"{self.section_name}"
-    
-class Author(models.Model):
-    author = models.CharField(max_length=50)
-    author_bio = models.TextField(max_length=2000)
 
-    def __str__(self):
-        return f"{self.author}"
 
 class Image(models.Model):
     image = models.ImageField(max_length=2000, upload_to="static/news/images")
     caption = models.TextField(max_length=400, null=True, blank=True)
 
+class Author(models.Model):
+    byline = models.CharField(max_length=50, null=True)
+    author_bio = models.TextField(max_length=2000)
+    author_slug = models.SlugField(null=True, blank=True, unique=True)
+    pic = models.ForeignKey(Image, null=True, on_delete=models.PROTECT)
+
+    def save(self, *args, **kwargs):
+        if not self.author_slug:
+            self.author_slug = slugify(self.byline)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.byline}"
+
 # image
 class Article(models.Model):
     headline = models.CharField(max_length=50, blank=False, unique_for_date="date")
     main = models.ForeignKey(Image, null=True, on_delete=models.PROTECT)
-    byline = models.ForeignKey(Author,null=True, on_delete=models.SET_NULL)
+    byline = models.ForeignKey(Author,null=True, on_delete=models.PROTECT)
     deck = models.CharField(max_length=240, blank=False)
     slug = models.SlugField(unique=True)
     url = models.SlugField(max_length=40, unique=True, null=True)
     date = models.DateTimeField(auto_now_add=False, null=True)
     content = HTMLField()
-    section = models.ForeignKey(Section, null=False, on_delete=models.PROTECT)
+    section = models.ForeignKey(Section, null=True, on_delete=models.SET_NULL)
     updated_at = models.DateTimeField(blank=True, null=True)
     update_lang = models.DateTimeField(blank=True, null=True)
     is_hero = models.BooleanField(default=False)  
