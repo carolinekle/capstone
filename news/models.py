@@ -74,7 +74,7 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, blank=True, null=True, related_name="article")
     
     def __str__(self):
-        return f"{self.commenter} comment on ({self.article})"
+        return f"{self.commenter} commented on {self.article}"
 
 class Following(models.Model):
     user_following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_following", blank=True, null=True,)

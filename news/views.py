@@ -30,10 +30,25 @@ def index(request):
 def article_details(request, section_url_name, url):
     section = get_object_or_404(Section, section_url_name=section_url_name)
     article = get_object_or_404(Article, url=url, section=section)
+    comments= Comment.objects.get(article=article)
     return render(request, "news/article.html", {
         "article": article,
-        "section": section
+        "section": section,
+        "comments":comments
     })
+
+def comment(request, article_id):
+    this_commenter = request.user
+    text = request.POST["new_comment"]
+    this_article= Article.objects.get(id=article_id)
+
+    new_comment = Comment(
+        comment_text=text,
+        commenter=this_commenter,
+        listing=this_article
+    )
+    new_comment.save()
+    return HttpResponseRedirect(reverse("article.html", args=[article_id]))
 
 def section(request, section_url_name):
     if section_url_name == "news":
@@ -74,8 +89,14 @@ def load_news(request):
         'news_articles': news_articles
         })
 
-def profile(request):
-    user = request.user
+def profile(request, user_username):
+   user = get_object_or_404(User, username=user_username)
+   followed_authors = Following.objects.filter(user_following=user).values_list('author_followed', flat=True)
+   articles_by_followed_authors = Article.objects.filter(byline__in=followed_authors)
+   return render(request, 'news/profile.html', {
+        'articles_by_followed_authors': articles_by_followed_authors,
+        'user': user
+    })
 
 def login_view(request):
     if request.method == "POST":

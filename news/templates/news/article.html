@@ -10,4 +10,22 @@
 {{ article.content | safe }}
 
 
+{% if user.is_authenticated %}
+    <form action="{% url 'comment' article.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Post a comment!" name="new_comment">
+        </input>
+        <input type="submit"></input>
+    </form>
+
+{% endif %}
+
+    <br>
+
+{% for comment in comments %}
+    <b>{{ comment.commenter }}</b>     <p>{{comment.comment_text}}</p>
+
+{% endfor %}
+
+
 {% endblock %}
