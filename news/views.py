@@ -74,6 +74,9 @@ def load_news(request):
         'news_articles': news_articles
         })
 
+def profile(request):
+    user = request.user
+
 def login_view(request):
     if request.method == "POST":
 
