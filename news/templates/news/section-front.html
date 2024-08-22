@@ -4,8 +4,6 @@
 
 <h3>{{ section.section_name }}</h3>
 
-
-<ul>
 {%for section_article in section_articles%}
   <div class="card" style="width: 18rem;">
     <a href="{% url 'article_details' section.section_url_name section_article.url %}">  
@@ -19,7 +17,9 @@
     </a>
   </div>
 {% endfor %}
-</ul>
+
+
+
 
 
 {% endblock %}
