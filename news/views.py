@@ -14,13 +14,14 @@ from django.db.models import Q
 
 from newsapi import NewsApiClient
 
-from .models import User, Section, Article, Author, Comment, Image, Following
+from .models import User, Section, Article, Author, Comment, Image, Following, Profile
 # Create your views here.
 
 newsapi = NewsApiClient(api_key='os.getenv(API_KEY)')
 
+
 def index(request):
-    search_article = request.GET.get('search')
+    search_article = request.GET.get('q')
     if search_article:
         return search(request, search_article)
 
@@ -93,17 +94,27 @@ def fetch_news(query, language='en', page_size=5):
         'pageSize': page_size,
         'apiKey': settings.NEWS_API_KEY
     }
-    response = requests.get(url, params=params)
-    data = response.json()
-    return data
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()  
+        return response.json()
+    except requests.RequestException as e:
+        print(f"Error fetching news: {e}")
+        return {}
 
 def load_news(request):
     query = 'technology'  
     news_data = fetch_news(query)
     news_articles = news_data.get('articles', [])
+    
+    articles = Paginator(news_articles, 10)
+    page_number = request.GET.get("page")
+    page_obj = articles.get_page(page_number)
+
     return render(request, 'news/news.html', {
-        'news_articles': news_articles
-        })
+        'news_articles': news_articles, 
+        'page_obj': page_obj  
+    })
 
 def profile(request, user_username):
    user = get_object_or_404(User, username=user_username)
@@ -114,7 +125,7 @@ def profile(request, user_username):
    page_number = request.GET.get("page")
    page_obj = articles.get_page(page_number)
 
-   return render(request, 'news/profile.html', {
+   return render(request, 'news/dashboard.html', {
         'articles_by_followed_authors': articles_by_followed_authors,
         'user': user,
         'page_obj':page_obj
@@ -148,10 +159,15 @@ def follow_status(request, author_id):
     else:
         return JsonResponse({"following": False})
     
-def search(request, search_article):
-    search_articles = Article.objects.filter(Q(title__icontains=search_article) & Q(content__icontains=search_article))
+def search(request, search_q):
+    search_results = Article.objects.filter(Q(headline__icontains=search_q) | Q(content__icontains=search_q))
+    articles = Paginator(search_results, 10)
+    page_number = request.GET.get("page")
+    page_obj = articles.get_page(page_number)
     return render(request, "news/search.html",{
-        "article":search_articles
+        "search_results":search_results,
+        "search_q":search_q,
+        "page_obj":page_obj
     })
 
 def follow(request, author_id):
