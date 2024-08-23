@@ -1,22 +1,24 @@
 {% extends "news/layout.html" %}
 
 {% block body %}
-    <h1>Latest News</h1>
-    <ul>
-<div class ="article-container">
-{% for article in news_articles %}
-  <div class="card" style="width: 18rem;">
-    <a href="{{ article.url }}">  
-      <img class="card-img-top" src="{{ article.urlToImage }}" class="img-thumbnail">
-      <div class="card-body">
-          <h2 class="card-title">{{ article.headline }}</h2>
-          <small>from:{{ article.source.name }}</a></small><br>
-          <small class="card-text">{{ article.description}}</small> <br>
-          <small>{{ article.author}}</a></small>
+
+<h1>Latest News</h1>
+
+<div class="article-container">
+      {% for article in page_obj %}
+      <div class="card" style="width: 18rem;">
+          <a href="{{ article.url }}" target="_blank"> 
+              {% if article.urlToImage %}
+              <img class="card-img-top" src="{{ article.urlToImage }}" class="img-thumbnail">
+              {% endif %}
+              <div class="card-body">
+                  <h2 class="card-title">{{ article.title }}</h2> 
+          </a>
+                  <small class="card-text">{{ article.description }}</small> <br> 
+                  <small><a href="#">{{ article.author }}</a></small>
+              </div>
+          </a>
       </div>
-    </a>
+      {% endfor %}
   </div>
-{% endfor %}
-
-
 {% endblock %}

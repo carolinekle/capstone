@@ -8,12 +8,22 @@ from tinymce.models import HTMLField
 class User(AbstractUser):
     pass
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+
 class Subsection(models.Model):
     subsection_name = models.CharField(max_length=20)
     sub_url_name = models.SlugField(max_length=20, null=True)
 
     def __str__(self):
         return f"{self.subsection_name}"
+
 
 class Section(models.Model):
     section_name = models.CharField(max_length=50)
@@ -26,6 +36,7 @@ class Section(models.Model):
 class Image(models.Model):
     image = models.ImageField(max_length=2000, upload_to="static/news/images")
     caption = models.TextField(max_length=400, null=True, blank=True)
+
 
 class Author(models.Model):
     byline = models.CharField(max_length=50, null=True)
@@ -41,7 +52,7 @@ class Author(models.Model):
     def __str__(self):
         return f"{self.byline}"
 
-# image
+
 class Article(models.Model):
     headline = models.CharField(max_length=50, blank=False, unique_for_date="date")
     main = models.ForeignKey(Image, null=True, on_delete=models.PROTECT)
