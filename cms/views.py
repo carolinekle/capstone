@@ -15,12 +15,17 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from news.models import Article, User, Image, Author, Section, User
 from .forms import ArticleForm
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 
 
 def cms_dashboard(request):
+    search_article = request.GET.get('q')
+    if search_article:
+        return search(request, search_article)
     articles = Article.objects.all()
     return render(request, 'cms/dashboard.html', {
       'articles': articles
@@ -50,6 +55,18 @@ def edit_article(request, article_id):
     return render(request, 'cms/article.html', {
         'form': form
         })
+
+def search(request, query):
+    search_results = Article.objects.filter(Q(headline__icontains=query) | Q(content__icontains=query))
+    articles = Paginator(search_results, 10)
+    page_number = request.GET.get("page")
+    page_obj = articles.get_page(page_number)
+    return render(request, "cms/search.html",{
+        "search_results":search_results,
+        "query":query,
+        "page_obj":page_obj
+    })
+
 
 def delete_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
