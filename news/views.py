@@ -15,6 +15,7 @@ from django.db.models import Q
 from newsapi import NewsApiClient
 
 from .models import User, Section, Article, Author, Comment, Image, Following, Profile
+from cms.models import Homepage
 # Create your views here.
 
 newsapi = NewsApiClient(api_key='os.getenv(API_KEY)')
@@ -25,13 +26,14 @@ def index(request):
     if search_article:
         return search(request, search_article)
 
-    all_articles = Article.objects.filter(is_published=True, is_hero=False).order_by('-date').all()
+    homepage = Homepage.objects.latest('date_created')
+    featured_articles = homepage.featured_articles.all()
     all_sections = Section.objects.all()
-    hero_articles = Article.objects.filter(is_hero=True)
+
     return render(request, "news/homepage.html", {
-        "all_articles" : all_articles,
+        "hero_article": homepage.hero_articles.latest('date'),
         "all_sections": all_sections,
-        "hero_articles": hero_articles
+        "featured_articles": featured_articles,
     })
 
 def article_details(request, section_url_name, url):

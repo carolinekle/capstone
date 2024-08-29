@@ -1,11 +1,17 @@
 from django import forms
 from tinymce.widgets import TinyMCE
 from news.models import Article, Author, Image, Section, User
+from .models import Homepage
+
+class HomepageForm(forms.ModelForm):
+    class Meta:
+        model = Homepage
+        fields = ['hero_articles','featured_articles']
 
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['headline', 'main', 'byline', 'deck', 'slug', 'url', 'date', 'content', 'section', 'updated_at', 'update_lang', 'is_hero', 'hero_priority', 'is_published']
+        fields = ['headline', 'main', 'byline', 'deck', 'slug', 'url', 'date', 'content', 'section', 'updated_at', 'update_lang', 'is_hero', 'is_featured', 'is_published']
         widgets = {'content': TinyMCE(attrs={'id': 'content-field','cols': 80, 'rows': 30})}
 
 class AuthorForm(forms.ModelForm):
