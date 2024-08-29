@@ -66,7 +66,7 @@ class Article(models.Model):
     updated_at = models.DateTimeField(blank=True, null=True)
     update_lang = models.DateTimeField(blank=True, null=True)
     is_hero = models.BooleanField(default=False)  
-    hero_priority = models.IntegerField(default=100) 
+    is_featured = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):

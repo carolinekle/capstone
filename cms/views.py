@@ -14,7 +14,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from news.models import Article, User, Image, Author, Section, User
-from .forms import ArticleForm
+from .models import Homepage
+from .forms import ArticleForm, HomepageForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 
@@ -39,7 +40,7 @@ def create_article(request):
             return HttpResponseRedirect(reverse('cms_dashboard'))
     else:
         form = ArticleForm()
-    return render(request, 'cms/cms_article.html', {
+    return render(request, 'cms/article.html', {
         'form': form
         })
 
@@ -66,6 +67,18 @@ def search(request, query):
         "query":query,
         "page_obj":page_obj
     })
+
+def edit_homepage(request):
+    if request.method == 'POST':
+        form = HomepageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+    else:
+        form = HomepageForm()
+    return render(request, 'cms/edit_homepage.html', {
+        'form': form
+        })
 
 
 def delete_article(request, article_id):
