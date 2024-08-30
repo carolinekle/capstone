@@ -6,7 +6,7 @@ from .models import Homepage
 class HomepageForm(forms.ModelForm):
     class Meta:
         model = Homepage
-        fields = ['hero_articles','featured_articles']
+        fields = ['hero_article','featured_articles','featured_404','featured_electric']
 
 class ArticleForm(forms.ModelForm):
     class Meta:

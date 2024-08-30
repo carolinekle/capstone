@@ -27,13 +27,20 @@ def index(request):
         return search(request, search_article)
 
     homepage = Homepage.objects.latest('date_created')
+
     featured_articles = homepage.featured_articles.all()
+    featured_404 = homepage.featured_404.all()
+    featured_electric = homepage.featured_electric.all()
+
     all_sections = Section.objects.all()
 
     return render(request, "news/homepage.html", {
-        "hero_article": homepage.hero_articles.latest('date'),
-        "all_sections": all_sections,
+        "homepage": homepage,
+        "hero_article": homepage.hero_articles,
         "featured_articles": featured_articles,
+        "featured_404":featured_404,
+        "featured_electric":featured_electric,
+        "all_sections": all_sections
     })
 
 def article_details(request, section_url_name, url):

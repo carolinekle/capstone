@@ -76,7 +76,7 @@ def edit_homepage(request):
             return HttpResponseRedirect(reverse('cms_dashboard'))
     else:
         form = HomepageForm()
-    return render(request, 'cms/edit.html', {
+    return render(request, 'cms/edit_homepage.html', {
         'form': form
         })
 
