@@ -3,18 +3,32 @@
 {% block body %}
 
 <h1>CMS Dashboard</h1>
-<a href="{% url 'create_article' %}">Create New Article</a>
-<a href="{% url 'edit_homepage' %}">Edit Homepage</a>
-<ul>
-  {% for article in articles %}
-    <li>
-      <a href="{% url 'edit_article' article.id %}">{{ article.headline }}</a>
-      <form action="{% url 'delete_article' article.id %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-      </form>
-    </li>
-  {% endfor %}
-</ul>
+
+<div class="d-flex mx-auto justify-content-evenly align-items-center">
+  <button type="button" class="btn btn-outline-success btn-lg">
+    <a href="{% url 'create_article' %}" style="color:">
+      Create New Article
+    </a>
+  </button>
+
+  <button type="button" class="btn btn-outline-success btn-lg">
+    <a href="{% url 'edit_homepage' %}" style="">
+      Edit Homepage
+    </a>
+  </button>
+</div>
+<div class="cms-articles">
+  <ul>
+    {% for article in articles %}
+      <li>
+        <a href="{% url 'edit_article' article.id %}">{{ article.headline }}</a>
+        <form action="{% url 'delete_article' article.id %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button value="{{ article.id }}" type="submit">Delete</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
 
 {% endblock %}

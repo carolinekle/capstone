@@ -36,7 +36,7 @@ def index(request):
 
     return render(request, "news/homepage.html", {
         "homepage": homepage,
-        "hero_article": homepage.hero_articles,
+        "hero_article": homepage.hero_article,
         "featured_articles": featured_articles,
         "featured_404":featured_404,
         "featured_electric":featured_electric,
