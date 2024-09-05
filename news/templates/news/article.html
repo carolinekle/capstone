@@ -1,31 +1,55 @@
 {% extends "news/layout.html" %}
 
 {% block body %}
+<div class="hero-section">
 
-<h3>{{ section.section_name }}</h3>
-<img class="hero-img" src="{{ article.main.image.url }}"> 
-    <h1>{{ article.headline }}</h1>
-<p>{{ article.deck }}</p>
-<small>{{ article.byline }}</small>
-{{ article.content | safe }}
+    <img class="hero-img" src="{{ article.main.image.url }}"> 
+    <div id="hero-content" class="text-light">
+        <p><a class="link-light" href="#">{{ section.section_name }}</a></p>
+        <h1>{{ article.headline }}</h1>
+        <p>{{ article.deck }}</p>
+        <a class="link-light" href="#"><small>{{ article.byline }}</small></a>
+    </div>
+</div>
 
+<div class="article text-light m-5 p-5">
+    {{ article.content | safe }}
+</div>
 
 {% if user.is_authenticated %}
-    <form action="{% url 'comment' article.id %}" method="POST">
-        {% csrf_token %}
-        <input type="text" placeholder="Post a comment!" name="new_comment">
-        </input>
-        <input type="submit"></input>
-    </form>
-
+<form action="{% url 'comment' article.id %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="text-light">Comment</label>
+      <input type="commment" class="form-control" name ="new_comment"  placeholder="Post a comment!">
+      <small id="comment" class="form-text text-light text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <input type="submit" class="btn btn-danger"></input>
+</form>
 {% endif %}
 
-    <br>
 
-{% for comment in comments %}
-    <b>{{ comment.commenter }}</b>     <p>{{comment.comment_text}}</p>
+    <br>             
 
-{% endfor %}
+<div class"list-group text-light">
 
+    {%for comment in comments%}
+
+        <a href="#" class="list-group-item list-group-item-action flex-column bg-dark text-white p-3 align-items-start active">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ comment.commenter }}</h5>
+              <small class="text-light">3 days ago</small>
+            </div>
+            <p class="mb-1">{{comment.comment_text}}</small>
+        </a>
+
+    {%endfor%}
+
+
+</div>
+
+<div class="alert alert-danger" role="alert">
+    No comments have been posted yet.
+</div>
 
 {% endblock %}

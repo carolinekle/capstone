@@ -1,5 +1,12 @@
 const followButton = document.querySelector('#follow')
+const headings=document.querySelector(".article").querySelectorAll("h2, h3, h4, h5")
 
+console.log("headings:" + headings)
+if (headings.length > 0) {
+    for (let i = 0; i < headings.length; i++) { 
+        headings[i].classList.add("text-danger");
+    }
+}
 function getCookie(name){
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);

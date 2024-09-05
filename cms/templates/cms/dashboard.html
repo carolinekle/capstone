@@ -6,18 +6,29 @@
 
 <div class="d-flex mx-auto justify-content-evenly align-items-center">
   <button type="button" class="btn btn-outline-success btn-lg">
-    <a href="{% url 'create_article' %}" style="color:">
+    <a vlass="link-light"href="{% url 'create_article' %}" style="color:">
       Create New Article
     </a>
   </button>
 
   <button type="button" class="btn btn-outline-success btn-lg">
-    <a href="{% url 'edit_homepage' %}" style="">
+    <a class="link-dark"href="{% url 'edit_homepage' %}" style="">
       Edit Homepage
     </a>
   </button>
 </div>
 <div class="cms-articles">
+
+{% comment %} 
+  <div class="list-group">
+    <button type="button" class="list-group-item list-group-item-action active">
+      Cras justo odio
+    </button>
+    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
+    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
+    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
+    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
+  </div> {% endcomment %}
   <ul>
     {% for article in articles %}
       <li>
