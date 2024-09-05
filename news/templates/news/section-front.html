@@ -2,24 +2,24 @@
 
 {% block body %}
 
-<h3>{{ section.section_name }}</h3>
-
+<h3 class="text-light">{{ section.section_name }}</h3>
+<div class="container">
 {%for section_article in section_articles%}
-  <div class="card" style="width: 18rem;">
-    <a href="{% url 'article_details' section.section_url_name section_article.url %}">  
+  <div class="card bg-dark text-white m-4" style="width: 18rem;">
+    <a class="link-light" href="{% url 'article_details' section.section_url_name section_article.url %}">  
       <img class="card-img-top" src="{{ section_article.main.image.url  }}" class="img-thumbnail">
       <div class="card-body">
           <h2 class="card-title">{{ section_article.headline }}</h2>
 
           <small class="card-text">{{ section_article.deck }}</small> <br>
-          <small><a href="#">{{ section_article.byline }}</a></small>
+          <small><a class="link-light" href="#">{{ section_article.byline }}</a></small>
       </div>
     </a>
   </div>
 {% endfor %}
 
 
-
+</div>
 
 
 {% endblock %}

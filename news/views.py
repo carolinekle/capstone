@@ -61,10 +61,10 @@ def comment(request, article_id):
     new_comment = Comment(
         comment_text=text,
         commenter=this_commenter,
-        listing=this_article
+        article=this_article
     )
     new_comment.save()
-    return HttpResponseRedirect(reverse("article.html", args=[article_id]))
+    return HttpResponseRedirect(reverse("article_details", args=[this_article.section.section_url_name, this_article.url]))
 
 def section(request, section_url_name):
     if section_url_name == "news":

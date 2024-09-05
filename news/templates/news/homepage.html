@@ -24,9 +24,17 @@
   {% endfor %}
 </ul>
 
+<div class="label m-2 text-center">
+  <h2 class="text-danger">
+    Today's Mix
+  </h2>
+  <h6 class="text-light"><i>Selected by our editors.</i></h6>
+  </div>
+  
+
 <div id="section-1">
   {% for article in featured_articles %}
-  <div class="card bg-dark text-white" > 
+  <div class="card bg-dark text-white m-4" style="width: 18rem;"> 
     {% if article.main %}
     <img class="card-img-top" src="{{ article.main.image.url }}" class="img-thumbnail">
     {% endif %}
@@ -44,24 +52,57 @@
 </div>
 
 
+<div class="label m-2 text-center">
+<h2 class="text-danger">
+  Electric Drama
+</h2>
+<h6 class="text-light"><i>"Now all the world's a sage."</i></h6>
+</div>
+
 <div id="section-1">
   {% for article in featured_electric %}
-  <div class="card" style="width: 18rem;"> 
+  <div class="card bg-dark text-white m-4" style="width: 18rem;"> 
     {% if article.main %}
     <img class="card-img-top" src="{{ article.main.image.url }}" class="img-thumbnail">
     {% endif %}
     <div class="card-body">
-      <a href="{% url 'article_details' article.section.section_url_name article.url %}">{{ article.headline }}</a>
+      <a class="link-danger" href="{% url 'article_details' article.section.section_url_name article.url %}">{{ article.headline }}</a>
       <br>
       <small>from: 
-        <a href="{% url 'section' article.section.section_url_name %}">{{ article.section.section_name }}</a>
+        <a  class="link-light" href="{% url 'section' article.section.section_url_name %}">{{ article.section.section_name }}</a>
       </small><br>
       <small class="card-text">{{ article.deck }}</small> <br>
-      <small><a href="{% url 'author_page' article.byline.author_slug %}">{{ article.byline }}</a></small>
+      <small><a class="link-light" href="{% url 'author_page' article.byline.author_slug %}">{{ article.byline }}</a></small>
     </div>
   </div>
   {% endfor %}
 </div>
 
+<div class="label m-2 text-center">
+  <h2 class="text-danger">
+    404
+  </h2>
+  <h6 class="text-light"><i>The internet is dead.</i></h6>
+</div>
+
+
+<div id="section-1">
+  {% for article in featured_electric %}
+  <div class="card bg-dark text-white m-4" style="width: 18rem;"> 
+    {% if article.main %}
+    <img class="card-img-top" src="{{ article.main.image.url }}" class="img-thumbnail">
+    {% endif %}
+    <div class="card-body">
+      <a class="link-danger" href="{% url 'article_details' article.section.section_url_name article.url %}">{{ article.headline }}</a>
+      <br>
+      <small>from: 
+        <a  class="link-light" href="{% url 'section' article.section.section_url_name %}">{{ article.section.section_name }}</a>
+      </small><br>
+      <small class="card-text">{{ article.deck }}</small> <br>
+      <small><a class="link-light" href="{% url 'author_page' article.byline.author_slug %}">{{ article.byline }}</a></small>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 
 {% endblock %}
