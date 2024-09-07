@@ -2,12 +2,15 @@
 
 {% block body %}
 
-<h1>Create/Edit Article</h1>
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_div }}
-  <button type="submit">Save</button>
-</form>
+<h1 class="m-5">Create/Edit Article</h1>
 
+
+<div class="article-content m-3">
+  <form method="POST" class="article-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_div }}
+    <button class="btn btn-outline-success m-2" type="submit">Save</button>
+  </form>
+</div>
 
 {% endblock %}
