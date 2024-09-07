@@ -76,3 +76,14 @@ display: block;
     align-items: start;
     overflow-x: scroll;
 }
+
+.article-content{
+    display: flex;
+justify-content: center;
+/* margin: auto; */
+}
+
+.article-form{
+    display: flex;
+flex-direction: column;
+}

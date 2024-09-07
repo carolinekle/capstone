@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, TextInput, FileInput
+from django.forms import ModelForm, TextInput, FileInput, Select, DateInput, RadioSelect
 from tinymce.widgets import TinyMCE
 from news.models import Article, Author, Image, Section, User
 from .models import Homepage
@@ -12,12 +12,16 @@ class HomepageForm(forms.ModelForm):
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['headline', 'main', 'byline', 'deck', 'slug', 'url', 'date', 'content', 'section', 'updated_at', 'update_lang', 'is_hero', 'is_featured', 'is_published']
+        fields = ['section','headline', 'main', 'byline', 'deck', 'slug', 'url', 'date', 'content', 'updated_at', 'update_lang', 'is_hero', 'is_featured', 'is_published']
         widgets = {
             'content': TinyMCE(attrs={
                 'id': 'content-field',
-                'cols': 50, 'rows': 30
+                'style':"width:70%"
                 }),
+            'section':Select(attrs={
+                'class':"form-select",
+                'style':"max-width:300px"
+            }),
             'headline': TextInput(attrs={
                 'class':"form-control",
                 'style': 'max-width: 300px;',
@@ -27,7 +31,32 @@ class ArticleForm(forms.ModelForm):
                 'class':"form-control",
                 'style': 'max-width: 300px;',
                 'placeholder': 'Deck'
-                })
+                }),
+            'main':Select(attrs={
+                'class':"form-select",
+                'style':"max-width:300px"
+            }),
+            'byline':Select(attrs={
+                'class':"form-select",
+                'style':"max-width:300px"
+            }),
+            'slug': TextInput(attrs={
+                'class':"form-control",
+                'style':"max-width:300px",
+                }),
+            'url':TextInput(attrs={
+                'class':"form-control",
+                'style':"max-width: 300px",
+                'placeholder':"URL"
+            }),
+            'date': DateInput(attrs={
+                'class':"input-group date",
+                'style':"max-width: 300px",
+            }),
+            'is_published':RadioSelect(attrs={
+                'class':"form-check-input",
+                'id':"flexCheckIndeterminate"
+            })
             }
 
 class AuthorForm(forms.ModelForm):
