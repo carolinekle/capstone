@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ModelForm, TextInput, FileInput
 from tinymce.widgets import TinyMCE
 from news.models import Article, Author, Image, Section, User
 from .models import Homepage
@@ -12,7 +13,22 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ['headline', 'main', 'byline', 'deck', 'slug', 'url', 'date', 'content', 'section', 'updated_at', 'update_lang', 'is_hero', 'is_featured', 'is_published']
-        widgets = {'content': TinyMCE(attrs={'id': 'content-field','cols': 80, 'rows': 30})}
+        widgets = {
+            'content': TinyMCE(attrs={
+                'id': 'content-field',
+                'cols': 50, 'rows': 30
+                }),
+            'headline': TextInput(attrs={
+                'class':"form-control",
+                'style': 'max-width: 300px;',
+                'placeholder': 'Headline'
+                 }),
+            'deck': TextInput(attrs={
+                'class':"form-control",
+                'style': 'max-width: 300px;',
+                'placeholder': 'Deck'
+                })
+            }
 
 class AuthorForm(forms.ModelForm):
     class Meta:

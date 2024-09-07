@@ -2,9 +2,9 @@
 
 {% block body %}
 
-<h1>CMS Dashboard</h1>
+<h1 class="m-4">Dashboard</h1>
 
-<div class="d-flex mx-auto justify-content-evenly align-items-center">
+<div class="dash mx-auto">
   <button type="button" class="btn btn-outline-success btn-lg">
     <a vlass="link-light"href="{% url 'create_article' %}" style="color:">
       Create New Article
@@ -17,19 +17,19 @@
     </a>
   </button>
 </div>
-<div class="cms-articles">
 
-{% comment %} 
-  <div class="list-group">
-    <button type="button" class="list-group-item list-group-item-action active">
-      Cras justo odio
-    </button>
-    <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-    <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-    <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-    <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-  </div> {% endcomment %}
-  <ul>
+<div class="cms-articles" >
+
+<h3>Articles</h3>
+  <div class="list-group ">
+  {% for article in articles %}
+    <a href="{% url 'edit_article' article.id %}" class="list-group-item list-group-item-action">
+      {{ article.headline }}
+    </a>
+  {% endfor %}
+  
+  </div> 
+{% comment %}   <ul>
     {% for article in articles %}
       <li>
         <a href="{% url 'edit_article' article.id %}">{{ article.headline }}</a>
@@ -39,7 +39,7 @@
         </form>
       </li>
     {% endfor %}
-  </ul>
+  </ul> {% endcomment %}
 </div>
 
 {% endblock %}

@@ -56,6 +56,23 @@ display: block;
     display:block;
 }
 
-.cms-articles>ul{
-    list-style-type: none;
+.content{
+    display: flex;
+    flex-direction: column;
+}
+
+.cms-articles{
+    display: flex;
+    margin: 2rem;
+    flex-direction: column;
+    width: 20rem;
+}
+
+.dash{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: start;
+    min-width: 100%;
+    align-items: start;
+    overflow-x: scroll;
 }
