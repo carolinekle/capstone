@@ -10,7 +10,7 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(blank=True, null=True)
+    bio = HTMLField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Image(models.Model):
 
 class Author(models.Model):
     byline = models.CharField(max_length=50, null=True)
-    author_bio = models.TextField(max_length=2000)
+    author_bio = HTMLField(max_length=2000)
     author_slug = models.SlugField(null=True, blank=True, unique=True)
     pic = models.ForeignKey(Image, null=True, on_delete=models.PROTECT)
 
@@ -64,7 +64,7 @@ class Article(models.Model):
     content = HTMLField()
     section = models.ForeignKey(Section, null=True, on_delete=models.SET_NULL)
     updated_at = models.DateTimeField(blank=True, null=True)
-    update_lang = models.DateTimeField(blank=True, null=True)
+    update_lang = models.CharField(max_length=50, blank=True, null=True)
     is_hero = models.BooleanField(default=False)  
     is_featured = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)

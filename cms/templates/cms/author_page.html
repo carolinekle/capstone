@@ -2,13 +2,14 @@
 
 {% block body %}
 
-<h1 class="m-5">Create/Edit Article</h1>
+<h1 class="m-5">Create/Edit Author</h1>
 
 
-<div class="article-content m-3">
+<div class="cms-content m-3">
   <form method="POST" class="article-form" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_div }}
+    {{ image_form.as_div}}
 
     <button class="btn btn-outline-success m-2" style="width:6rem" type="submit">Save</button>
   </form>
