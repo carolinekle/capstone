@@ -77,13 +77,15 @@ display: block;
     overflow-x: scroll;
 }
 
-.article-content{
+.cms-content{
     display: flex;
 justify-content: center;
 /* margin: auto; */
+width:1000px;
 }
 
 .article-form{
     display: flex;
 flex-direction: column;
+width:700px
 }

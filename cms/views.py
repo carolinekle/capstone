@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from news.models import Article, User, Image, Author, Section, User
 from .models import Homepage
-from .forms import ArticleForm, HomepageForm
+from .forms import ArticleForm, HomepageForm, AuthorForm, ImageForm, SectionForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 
@@ -41,6 +41,46 @@ def create_article(request):
     else:
         form = ArticleForm()
     return render(request, 'cms/article.html', {
+        'form': form
+        })
+
+def create_author(request):
+    if request.method == 'POST':
+        image_form = ImageForm(request.POST, request.FILES )
+        form = AuthorForm(request.POST, request.FILES)
+        if form.is_valid and image_form.is_valid():
+            form.save()
+            image_form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+    else:
+        form = AuthorForm()
+    return render(request, 'cms/author_page.html', {
+        'form': form,
+        'image_form':image_form
+        })
+
+def create_section(request):
+    if request.method == 'POST':
+        form = SectionForm(request.POST, request.FILES)
+        if form.is_valid:
+            form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+    else:
+        form = SectionForm()
+    return render(request, 'cms/section.html', {
+        'form': form,
+        })
+
+def edit_author(request, author_id):
+    author = get_object_or_404(Article, id=author_id)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES, instance=author)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+    else:
+        form = ArticleForm(instance=author)
+    return render(request, 'cms/author_page.html', {
         'form': form
         })
 
