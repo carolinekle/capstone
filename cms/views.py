@@ -24,9 +24,9 @@ from django.core.paginator import Paginator
 
 
 def cms_dashboard(request):
-    search_article = request.GET.get('q')
-    if search_article:
-        return search(request, search_article)
+    search_content = request.GET.get('q')
+    if search_content:
+        return search(request, search_content)
     articles = Article.objects.all()
     return render(request, 'cms/dashboard.html', {
       'articles': articles
@@ -44,6 +44,19 @@ def create_article(request):
         'form': form
         })
 
+def create_image(request):
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+    else:
+        form = ImageForm()
+    return render(request, 'cms/create-img.html', {
+        'form': form,
+    })
+
+
 def create_author(request):
     if request.method == 'POST':
         image_form = ImageForm(request.POST, request.FILES )
@@ -54,6 +67,7 @@ def create_author(request):
             return HttpResponseRedirect(reverse('cms_dashboard'))
     else:
         form = AuthorForm()
+        image_form = ImageForm()
     return render(request, 'cms/author_page.html', {
         'form': form,
         'image_form':image_form
@@ -96,17 +110,24 @@ def edit_article(request, article_id):
     return render(request, 'cms/article.html', {
         'form': form
         })
+def search_all(query):
+    search_query = Q(headline__icontains=query) | Q(content__icontains=query)
+    
+    results = {
+        'articles': Article.objects.filter(search_query),
+        'sections': Section.objects.filter(search_query),
+        'authors': Author.objects.filter(search_query),
+        'images': Image.objects.filter(search_query)  # Add other models as needed
+    }
+    return results
 
-def search(request, query):
-    search_results = Article.objects.filter(Q(headline__icontains=query) | Q(content__icontains=query))
-    articles = Paginator(search_results, 10)
-    page_number = request.GET.get("page")
-    page_obj = articles.get_page(page_number)
-    return render(request, "cms/search.html",{
-        "search_results":search_results,
-        "query":query,
-        "page_obj":page_obj
-    })
+def search(request):
+    query = request.GET.get('q', '')
+    results = search_all(query)
+    return render(request, 'search.html', {
+        'results':results
+        })
+
 
 def edit_homepage(request):
     if request.method == 'POST':

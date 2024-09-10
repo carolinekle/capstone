@@ -1,41 +1,50 @@
-{% extends "cms/cms_layout.html" %}
+{% extends "cms/layout.html" %}
 
 {% block body %}
 
 <h1 class="m-4">Dashboard</h1>
 
 <div class="dash mx-auto">
-<div class="btn-parent">
-  <button type="button" class="btn btn-outline-success btn-lg">
-    <a id="btn-hover" class="link-dark" href="{% url 'create_article' %}" style="color:">
-      Create New Article
-    </a>
-  </button>
+    <div class="btn-parent">
+      <button type="button" class="btn btn-outline-success btn-lg">
+        <a id="btn-hover" class="link-dark" href="{% url 'create_article' %}" style="color:">
+          Create New Article
+        </a>
+      </button>
 
-</div>
-<div class="btn-parent">
-  <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
-    <a id="btn-hover" class="link-dark"href="{% url 'edit_homepage' %}" style="">
-      Edit Homepage
-    </a>
-  </button>
-</div>
+    </div>
 
-<div class="btn-parent">
-  <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
-    <a id="btn-hover" class="link-dark"href="{% url 'create_author' %}" style="">
-      Create Author
-    </a>
-  </button>
-</div>
+    <div class="btn-parent">
+      <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
+        <a id="btn-hover" class="link-dark"href="{% url 'edit_homepage' %}" style="">
+          Edit Homepage
+        </a>
+      </button>
+    </div>
 
-<div class="btn-parent">
-  <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
-    <a id="btn-hover" class="link-dark"href="{% url 'create_author' %}" style="">
-      Create Section
-    </a>
-  </button>
-</div>
+    <div class="btn-parent">
+      <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
+        <a id="btn-hover" class="link-dark"href="{% url 'create_author' %}" style="">
+          Create Author
+        </a>
+      </button>
+    </div>
+
+    <div class="btn-parent">
+      <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
+        <a id="btn-hover" class="link-dark"href="{% url 'create_section' %}" style="">
+          Create Section
+        </a>
+      </button>
+    </div>
+
+      <div class="btn-parent">
+        <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
+          <a id="btn-hover" class="link-dark"href="{% url 'create_image' %}" style="">
+            Create Image
+          </a>
+        </button> 
+      </div>
 </div>
 
 <div class="cms-articles" >
