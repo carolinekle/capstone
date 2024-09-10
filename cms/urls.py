@@ -19,5 +19,6 @@ urlpatterns = [
     path('delete/<int:article_id>/', views.delete_article, name='delete_article'),
     path('create_author', views.create_author, name="create_author"),
     path('create_section', views.create_section, name="create_section"),
+    path('edit_section/<int:section_id>', views.edit_section, name="edit_section"),
     path('create_image/', views.create_image, name="create_image")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

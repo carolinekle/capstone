@@ -1,20 +1,31 @@
 {% extends "cms/layout.html" %}
 
 {% block body %}
-
+{% load custom_filters %}
 <h1 class="m-4">Results for "{{ search_q }}"</h4>
 <div class="cms-articles">
   <div class="list-group ">
-    {% for article in page_obj %}
-      <a href="{% url 'edit_article' article.id %}" class="list-group-item list-group-item-action">
-        {{ article.headline }}
-      </a>
-    {% endfor %}
+    {% for result in search_results %}
+    {% if result.object|to_class_name == 'Author' %}
+    <a href="{% url 'create_author' result.object.id %}" class="list-group-item list-group-item-action">
+      Author – {{ result.object.byline }}
+    </a>
+    {% elif result.object|to_class_name == 'Article' %}
+    <a href="{% url 'edit_article' result.object.id %}" class="list-group-item list-group-item-action">
+     Article – {{ result.object.headline }}
+    </a>
+    {% elif result.object|to_class_name == 'Section' %}
+    <a href="{% url 'edit_section' result.object.id %}" class="list-group-item list-group-item-action">
+      Section – {{ result.object.section_name }}
+    </a>
+    {% endif %}
+
+  {% endfor %}
 
   </div>
 </div>
 
-<div class="pagination d-flex justify-content-center my-2">
+{% comment %} <div class="pagination d-flex justify-content-center my-2">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -26,6 +37,6 @@
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
     {% endif %}
     </span>
-  </div>
+  </div> {% endcomment %}
 
 {% endblock %}
