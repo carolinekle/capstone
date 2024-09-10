@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "tinymce",
     "cms",
     "news",
+    "haystack"
 ]
 
 
@@ -77,6 +78,13 @@ TEMPLATES = [
 WSGI_APPLICATION = "capstone.wsgi.application"
 
 NEWS_API_KEY = 'f14129816c0d44ad9387564f2e4dec69'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

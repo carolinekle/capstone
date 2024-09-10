@@ -18,6 +18,7 @@ from .models import Homepage
 from .forms import ArticleForm, HomepageForm, AuthorForm, ImageForm, SectionForm
 from django.db.models import Q
 from django.core.paginator import Paginator
+from haystack.query import SearchQuerySet
 
 
 # Create your views here.
@@ -85,6 +86,19 @@ def create_section(request):
         'form': form,
         })
 
+def edit_section(request, section_id):
+    section = get_object_or_404(Section, id=section_id)
+    if request.method =="POST":
+        form = SectionForm(request.POST, request.FILES, instance=section)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+        else:
+            form = SectionForm(instance=section)
+        return render(request, 'cms/section.html', {
+            'form': form
+            })
+
 def edit_author(request, author_id):
     author = get_object_or_404(Article, id=author_id)
     if request.method == 'POST':
@@ -110,22 +124,12 @@ def edit_article(request, article_id):
     return render(request, 'cms/article.html', {
         'form': form
         })
-def search_all(query):
-    search_query = Q(headline__icontains=query) | Q(content__icontains=query)
-    
-    results = {
-        'articles': Article.objects.filter(search_query),
-        'sections': Section.objects.filter(search_query),
-        'authors': Author.objects.filter(search_query),
-        'images': Image.objects.filter(search_query)  # Add other models as needed
-    }
-    return results
 
-def search(request):
-    query = request.GET.get('q', '')
-    results = search_all(query)
-    return render(request, 'search.html', {
-        'results':results
+def search(request, query):
+    search_results = SearchQuerySet().filter(content=query)
+    return render(request, 'cms/search.html', {
+        'search_results': search_results,
+        "search_q":query
         })
 
 
