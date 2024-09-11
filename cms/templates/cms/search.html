@@ -10,16 +10,19 @@
     <a href="{% url 'create_author' result.object.id %}" class="list-group-item list-group-item-action">
       Author – {{ result.object.byline }}
     </a>
-    {% elif result.object|to_class_name == 'Article' %}
+    {% endif %}
+    
+    {% if result.object|to_class_name == 'Article' %}
     <a href="{% url 'edit_article' result.object.id %}" class="list-group-item list-group-item-action">
-     Article – {{ result.object.headline }}
+      Article – {{ result.object.headline }}
     </a>
-    {% elif result.object|to_class_name == 'Section' %}
+    {% endif %}
+    
+    {% if result.object|to_class_name == 'Section' %}
     <a href="{% url 'edit_section' result.object.id %}" class="list-group-item list-group-item-action">
       Section – {{ result.object.section_name }}
     </a>
     {% endif %}
-
   {% endfor %}
 
   </div>
