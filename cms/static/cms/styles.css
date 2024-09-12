@@ -90,3 +90,9 @@ width:1000px;
 flex-direction: column;
 width:700px
 }
+
+.article-content{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}

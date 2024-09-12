@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "tinymce",
     "cms",
     "news",
-    "haystack"
+    "haystack",
+    "clearcache",
 ]
 
 

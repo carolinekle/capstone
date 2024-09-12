@@ -5,17 +5,25 @@
 <h3 class="text-light">{{ section.section_name }}</h3>
 <div class="container">
 {%for section_article in section_articles%}
-  <div class="card bg-dark text-white m-4" style="width: 18rem;">
-    <a class="link-light" href="{% url 'article_details' section.section_url_name section_article.url %}">  
-      <img class="card-img-top" src="{{ section_article.main.image.url  }}" class="img-thumbnail">
-      <div class="card-body">
-          <h2 class="card-title">{{ section_article.headline }}</h2>
-
-          <small class="card-text">{{ section_article.deck }}</small> <br>
-          <small><a class="link-light" href="#">{{ section_article.byline }}</a></small>
-      </div>
-    </a>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="col">
+    <div class="card bg-dark text-white m-4 h-100" style="width: 18rem;">
+    
+        <img class="card-img-top" src="{{ section_article.main.image.url  }}" class="img-thumbnail">
+        <div class="card-body"> 
+          <a class="link-danger bg-dark" href="{% url 'article_details' section.section_url_name section_article.url %}">  
+            <h2 class="card-title">{{ section_article.headline }}</h2>
+          </a>
+            <small>from: 
+              <a  class="link-light" href="{% url 'section' section_article.section.section_url_name %}">{{ section_article.section.section_name }}</a>
+            </small><br>
+            <small class="card-text">{{ section_article.deck }}</small> <br>
+            <small><a class="link-light" href="#">{{ section_article.byline }}</a></small>
+        </div>
+      </a>
+    </div>
   </div>
+</div>
 {% endfor %}
 
 

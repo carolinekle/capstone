@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm, TextInput, FileInput, Select, DateInput, CheckboxInput, SelectMultiple
 from tinymce.widgets import TinyMCE
-from news.models import Article, Author, Image, Section, User
+from news.models import Article, Author, Image, Section, User, Like
 from .models import Homepage
 
 class HomepageForm(forms.ModelForm):
@@ -26,6 +26,21 @@ class HomepageForm(forms.ModelForm):
                 'style':"max-width:300px"
             }),
         }
+class LikeForm(forms.ModelForm):
+    class Meta:
+        model = Like
+        fields =['liker','article_liked']
+        widgets = {
+            'liker':SelectMultiple(attrs={
+                'class':"form-select",
+                'style':"max-width:300px"
+            }),
+            'article-liked':SelectMultiple(attrs={
+                'class':"form-select",
+                'style':"max-width:300px"
+            })
+        }
+
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
@@ -87,6 +102,11 @@ class ArticleForm(forms.ModelForm):
                 'placeholder': 'Update Language'
             }),
             }
+        
+        def __init__(self, *args, **kwargs):
+            super(ArticleForm, self).__init__(*args, **kwargs)
+            self.offcanvas_fields = ['section', 'headline', 'author', 'slug', 'date', 'updated_at', 'update_lang', 'main']
+            self.main_fields = ['deck', 'content', 'is_published']
 
 
 class AuthorForm(forms.ModelForm):

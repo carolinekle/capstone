@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from news.models import Article, User, Image, Author, Section, User
 from .models import Homepage
-from .forms import ArticleForm, HomepageForm, AuthorForm, ImageForm, SectionForm
+from .forms import ArticleForm, HomepageForm, AuthorForm, ImageForm, SectionForm,LikeForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 from haystack.query import SearchQuerySet
@@ -86,6 +86,7 @@ def create_section(request):
         'form': form,
         })
 
+
 def edit_section(request, section_id):
     section = get_object_or_404(Section, id=section_id)
     if request.method =="POST":
@@ -98,6 +99,18 @@ def edit_section(request, section_id):
         return render(request, 'cms/section.html', {
             'form': form
             })
+
+def create_like(request):
+    if request.method == 'POST':
+        form = LikeForm(request.POST, request.FILES)
+        if form.is_valid:
+            form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+    else:
+        form = LikeForm()
+    return render(request, 'cms/like.html', {
+        'form': form,
+        })
 
 def edit_author(request, author_id):
     author = get_object_or_404(Article, id=author_id)

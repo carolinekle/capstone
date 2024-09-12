@@ -68,6 +68,7 @@ div.section-wrapper > ul{
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 91vh;
 }
 .container{
     display: flex;
