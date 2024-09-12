@@ -79,3 +79,11 @@ div.section-wrapper > ul{
 .continer > *{
     flex:0 0 200px;
 }
+
+.comments{
+    width: 30rem;
+}
+
+.comment{
+    width: 25rem;
+}
