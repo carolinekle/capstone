@@ -7,3 +7,4 @@ imageio==2.31.1
 django-tinymce==4.1.0
 Whoosh==2.7.4
 django-haystack==3.3.0
+django-clearcache==1.2.1

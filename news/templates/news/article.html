@@ -35,6 +35,20 @@
 
     {%for comment in comments%}
 
+
+    <div class="d-flex flex-start">
+        <img class="rounded-circle shadow-1-strong me-3"
+          src="" alt="avatar" width="60"
+          height="60" />
+        <div>
+          <h6 class="fw-bold mb-1 text-light">{{ comment.commenter }}</h6>
+          <div class="d-flex align-items-center mb-3">
+          <p class="mb-0 text-light">
+            {{comment.comment_text}}
+          </p>
+        </div>
+      </div>
+    </div>
         <a href="#" class="list-group-item list-group-item-action flex-column bg-dark text-white p-3 align-items-start active">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">{{ comment.commenter }}</h5>

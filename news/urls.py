@@ -6,6 +6,7 @@ from . import views
 
 
 urlpatterns = [
+    path('admin/clearcache/', include('clearcache.urls')),
     path("admin/", admin.site.urls),
     path("", views.index, name="homepage"),
     path('tinymce/', include('tinymce.urls')),
