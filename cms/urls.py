@@ -22,5 +22,4 @@ urlpatterns = [
     path('create_section', views.create_section, name="create_section"),
     path('edit_section/<int:section_id>', views.edit_section, name="edit_section"),
     path('create_image/', views.create_image, name="create_image"),
-    path('create_like', views.create_like, name="create_like")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

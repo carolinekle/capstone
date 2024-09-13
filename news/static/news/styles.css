@@ -82,8 +82,13 @@ div.section-wrapper > ul{
 
 .comments{
     width: 30rem;
+    align-items: center;
 }
 
 .comment{
     width: 25rem;
+}
+
+.comment-input{
+    width:25rem;
 }
