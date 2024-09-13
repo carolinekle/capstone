@@ -26,20 +26,7 @@ class HomepageForm(forms.ModelForm):
                 'style':"max-width:300px"
             }),
         }
-class LikeForm(forms.ModelForm):
-    class Meta:
-        model = Like
-        fields =['liker','article_liked']
-        widgets = {
-            'liker':SelectMultiple(attrs={
-                'class':"form-select",
-                'style':"max-width:300px"
-            }),
-            'article-liked':SelectMultiple(attrs={
-                'class':"form-select",
-                'style':"max-width:300px"
-            })
-        }
+
 
 class ArticleForm(forms.ModelForm):
     class Meta:

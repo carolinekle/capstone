@@ -10,11 +10,12 @@ from django.http import JsonResponse
 from django.contrib.staticfiles.apps import StaticFilesConfig
 from django.core.paginator import Paginator
 from django.db.models import Q
-
+from django.http import JsonResponse
+import json
 
 from newsapi import NewsApiClient
 
-from .models import User, Section, Article, Author, Comment, Image, Following, Profile
+from .models import User, Section, Article, Author, Comment, Image, Following, Profile, Like
 from cms.models import Homepage
 # Create your views here.
 
@@ -54,17 +55,59 @@ def article_details(request, section_url_name, url):
     })
 
 def comment(request, article_id):
-    this_commenter = request.user
-    text = request.POST["new_comment"]
-    this_article= Article.objects.get(id=article_id)
+    try:
+        print("Request body: ", request.body) 
+        data = json.loads(request.body)
+        this_commenter = request.user
+        text = data['body']
+        this_article = Article.objects.get(id=article_id)
 
-    new_comment = Comment(
-        comment_text=text,
-        commenter=this_commenter,
-        article=this_article
-    )
-    new_comment.save()
-    return HttpResponseRedirect(reverse("article_details", args=[this_article.section.section_url_name, this_article.url]))
+        new_comment = Comment(
+            comment_text=text,
+            commenter=this_commenter,
+            article=this_article
+        )
+        new_comment.save()
+        response_data = {
+            "text": new_comment.comment_text,
+            "commenter": new_comment.commenter,
+            "article": article_id  
+        } 
+        return JsonResponse(response_data)
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON data"}, status=400)
+    except Article.DoesNotExist:
+        return JsonResponse({"error": "Article not found"}, status=404)
+
+
+
+def like_status(request, comment_id):
+    if request.user.is_authenticated:
+        liker = request.user
+        comment = get_object_or_404(Comment, pk=comment_id)
+        existing_like = Like.objects.filter(comment_liked=comment, liker=liker).exists()
+        return JsonResponse({"liked": existing_like})
+    else:
+        return JsonResponse({"liked": False})
+
+def like(request, comment_id):
+    if request.method == "POST":
+        liker = request.user
+        comment = get_object_or_404(Comment, pk=comment_id)
+        existing_like = Like.objects.filter(comment_liked=comment, liker=liker).first()
+        if existing_like:
+            existing_like.delete()
+            return JsonResponse({"message": "like removed"})
+        else:
+            new_like = Like(
+                liker=liker,
+                comment_liked=comment
+            )
+            new_like.save()
+            return JsonResponse({"message": "like added"})
+    elif json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON data"}, status=400)
 
 def section(request, section_url_name):
     if section_url_name == "news":

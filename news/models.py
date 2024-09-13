@@ -83,9 +83,16 @@ class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="commenter")
     comment_text = models.CharField(max_length=240)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, blank=True, null=True, related_name="article")
+
     
     def __str__(self):
         return f"{self.commenter} commented on {self.article}"
+    
+    def likes(self):
+        return Like.objects.filter(comment_liked=self).count()
+    
+    def user_likes(self):
+        return Like.objects.filter(comment_liked=self).exists()
 
 class Following(models.Model):
     user_following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_following", blank=True, null=True,)
@@ -96,7 +103,7 @@ class Following(models.Model):
     
 class Like(models.Model):
     liker = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liker")
-    article_liked = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="article_liked")
+    comment_liked = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True, related_name="comment_liked")
 
     def __str__(self):
-        return f"User {self.liker} liked {self.article_liked}"
+        return f"User {self.liker} liked {self.comment_liked}"

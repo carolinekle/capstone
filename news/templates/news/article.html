@@ -17,53 +17,51 @@
 </div>
 
 {% if user.is_authenticated %}
-<form action="{% url 'comment' article.id %}" method="POST">
-    {% csrf_token %}
+<div class="comment-input p-2">
+<form action="{% url 'comment' article.id %}" id="comment-form" >
+  {% csrf_token %}
     <div class="form-group">
       <label class="text-light">Comment</label>
-      <input type="commment" class="form-control" name ="new_comment"  placeholder="Post a comment!">
-      <small id="comment" class="form-text text-light text-muted">We'll never share your email with anyone else.</small>
+      <input type="commment" class="form-control mb-3 mt-3" name="new_comment"  id="comment-body" value="{{comment.id}}" placeholder="Post a comment!">
+     
     </div>
-    <input type="submit" class="btn btn-danger"></input>
+    <input type="submit" class="comment-submit-btn btn btn-danger"></input>
 </form>
+</div>
 {% endif %}
 
 
     <br>             
 
-<div class"comments list-group text-light">
+<div class="comments mb-5 list-group text-light">
 
-    {%for comment in comments%}
-
-
-    <div class="comment border-danger d-flex m-3 flex-start">
-        <img class="rounded-circle shadow-1-strong me-3"
-          src="" alt="avatar" width="30"
-          height="30" />
-        <div class="border-danger">
-          <h6 class="fw-bold mb-1 text-light">{{ comment.commenter }}</h6>
-          <div class="d-flex align-items-center mb-3">
-          <p class="mb-0 text-light">
-            {{comment.comment_text}}
-          </p>
-        </div>
-      </div>
-    </div>
-{% comment %}         <a href="#" class="list-group-item list-group-item-action flex-column bg-dark text-white p-3 align-items-start active">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{ comment.commenter }}</h5>
-              <small class="text-light">3 days ago</small>
+  {% if comments %}
+    {% for comment in comments %}
+        <div class="comment rounded border border-danger d-flex m-3 flex-start align-items-stretch">
+            <svg style="align-self:center" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="text-light m-2 bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+            </svg>
+            <div class="border-danger p-2">
+                <h6 class="fw-bold mb-1 text-danger">{{ comment.commenter }}</h6>
+                <div class="d-flex align-items-center mb-3">
+                    <p class="mb-0 text-light">{{ comment.comment_text }}</p>
+                </div>
+                <div value={{comment.id}} class='d-flex flex-column mr-2 like_{{ comment.id }}' id="comment" data-post-id="{{ comment.id }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart heart_{{ comment.id }}" viewBox="0 0 16 16">
+                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                </svg>
+                <span value={{comment.likes}} class = "like_count_{{comment.id}}">{{ comment.likes }} </span>             
+              </div>
             </div>
-            <p class="mb-1">{{comment.comment_text}}</small>
-        </a> {% endcomment %}
-
-    {%endfor%}
-
+        </div>
+    {% endfor %}
 
 </div>
 
+{% else %}
 <div class="alert alert-danger" role="alert">
     No comments have been posted yet.
 </div>
+{% endif %}
 
 {% endblock %}
