@@ -18,7 +18,8 @@ from newsapi import NewsApiClient
 from .models import User, Section, Article, Author, Comment, Image, Following, Profile, Like
 from cms.models import Homepage
 # Create your views here.
-
+def test():
+    return 
 def index(request):
     search_article = request.GET.get('q')
     if search_article:
@@ -54,7 +55,7 @@ def article_details(request, section_url_name, url):
 def comment(request, article_id):
     try:
         print("Request body: ", request.body) 
-        data = json.loads(request.body)
+        data = json.loads(request.body) 
         this_commenter = request.user
         text = data['body']
         this_article = Article.objects.get(id=article_id)
