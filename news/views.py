@@ -19,9 +19,6 @@ from .models import User, Section, Article, Author, Comment, Image, Following, P
 from cms.models import Homepage
 # Create your views here.
 
-newsapi = NewsApiClient(api_key='os.getenv(API_KEY)')
-
-
 def index(request):
     search_article = request.GET.get('q')
     if search_article:

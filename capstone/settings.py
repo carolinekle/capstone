@@ -34,6 +34,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Application definition
 
 INSTALLED_APPS = [
+    "news",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -78,14 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "capstone.wsgi.application"
 
-NEWS_API_KEY = 'os.getenv(API_KEY)'
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
-    },
-}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
