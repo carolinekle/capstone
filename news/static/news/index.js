@@ -123,15 +123,20 @@ if(commentSubmitBtn){
         e.preventDefault();
         const commentBody = document.getElementById('comment-body');
         const text = commentBody.value;
-        const commentForm = document.getElementById('comment-form');
+        const form = document.getElementById('comment-form');
+        const article_id = form.getAttribute('data-article-id');
 
-/*         const articleId = `${article.id|safe}`; */
+
+        console.log(article_id);  
+        console.log(text)
+
+
         console.log("CSRF Token: ", getCookie('csrftoken'));
-        fetch(`/comment/${articleId}/`, {
+        fetch(`/comment/${article_id}`, {
             method: 'POST',
             headers: {"Content-type": "application/json", "X-CSRFToken": getCookie("csrftoken")},
             body: JSON.stringify({
-                body: text
+                text: text
             }),
         })
         .then(response => response.json())
@@ -142,7 +147,7 @@ if(commentSubmitBtn){
                 console.error(result.error);
                 return;
             }
-
+            else{
             let newComment = document.createElement('div');
             newComment.className = 'comment rounded border border-danger d-flex m-3 flex-start align-items-stretch';
 
@@ -161,6 +166,7 @@ if(commentSubmitBtn){
             document.querySelector('.comments').appendChild(newComment);
 
             commentBody.value = '';
+            }
         })
         .catch(error => console.error('Error:', error));
     });

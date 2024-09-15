@@ -11,15 +11,14 @@ from django.contrib.staticfiles.apps import StaticFilesConfig
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
-import json
+from django.utils import timezone
 
 from newsapi import NewsApiClient
 
 from .models import User, Section, Article, Author, Comment, Image, Following, Profile, Like
 from cms.models import Homepage
 # Create your views here.
-def test():
-    return 
+             
 def index(request):
     search_article = request.GET.get('q')
     if search_article:
@@ -45,7 +44,7 @@ def index(request):
 def article_details(request, section_url_name, url):
     section = get_object_or_404(Section, section_url_name=section_url_name)
     article = get_object_or_404(Article, url=url, section=section)
-    comments= Comment.objects.filter(article=article)
+    comments= Comment.objects.filter(article=article).order_by("-created_date")
     return render(request, "news/article.html", {
         "article": article,
         "section": section,
@@ -53,31 +52,34 @@ def article_details(request, section_url_name, url):
     })
 
 def comment(request, article_id):
-    try:
-        print("Request body: ", request.body) 
-        data = json.loads(request.body) 
-        this_commenter = request.user
-        text = data['body']
-        this_article = Article.objects.get(id=article_id)
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
 
-        new_comment = Comment(
-            comment_text=text,
-            commenter=this_commenter,
-            article=this_article
-        )
-        new_comment.save()
-        response_data = {
-            "text": new_comment.comment_text,
-            "commenter": new_comment.commenter,
-            "article": article_id  
-        } 
-        return JsonResponse(response_data)
+        if data.get("text") is not None:
+            text = data["text"]
+            this_commenter = request.user
+            this_article = Article.objects.get(id=article_id)
 
-    except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON data"}, status=400)
-    except Article.DoesNotExist:
-        return JsonResponse({"error": "Article not found"}, status=404)
+            new_comment = Comment(
+                comment_text=text,
+                commenter=this_commenter,
+                article=this_article,
+                created_date=timezone.now()
+            )
+            new_comment.save()
+            response_data = {
+                "text": new_comment.comment_text,
+                "commenter": str(new_comment.commenter),  
+                "article": article_id,
+            }
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({"error": "Comment text missing"}, status=400)
 
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
 def like_status(request, comment_id):

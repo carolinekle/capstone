@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify 
 from tinymce.models import HTMLField
+from django.utils import timezone
 
 # Create your models here.
 
@@ -83,8 +84,7 @@ class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="commenter")
     comment_text = models.CharField(max_length=240)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, blank=True, null=True, related_name="article")
-
-    
+    created_date = models.DateTimeField(default=timezone.now())
     def __str__(self):
         return f"{self.commenter} commented on {self.article}"
     
@@ -93,6 +93,9 @@ class Comment(models.Model):
     
     def user_likes(self):
         return Like.objects.filter(comment_liked=self).exists()
+    
+    def since(self):
+        return (timezone.now() - self.created_date).days
 
 class Following(models.Model):
     user_following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_following", blank=True, null=True,)
