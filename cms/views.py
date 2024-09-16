@@ -41,9 +41,12 @@ def create_article(request):
             return HttpResponseRedirect(reverse('cms_dashboard'))
     else:
         form = ArticleForm()
-    return render(request, 'cms/article.html', {
-        'form': form
-        })
+        context ={
+            'form':form, 
+            'helper1':form.helper1,
+            'helper2':form.helper2
+        }
+    return render(request, 'cms/article.html', context)
 
 def create_image(request):
     if request.method == 'POST':

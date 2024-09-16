@@ -84,7 +84,7 @@ class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name="commenter")
     comment_text = models.CharField(max_length=240)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, blank=True, null=True, related_name="article")
-    created_date = models.DateTimeField(default=timezone.now())
+    created_date = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return f"{self.commenter} commented on {self.article}"
     

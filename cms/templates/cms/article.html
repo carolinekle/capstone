@@ -1,7 +1,7 @@
 {% extends "cms/layout.html" %}
 
 {% block body %}
-
+{% load crispy_forms_tags %}
 <h1 class="m-5">Create/Edit Article</h1>
 
 
@@ -20,9 +20,7 @@
     <div class="offcanvas-body">
       <form method="POST" class="article-form" enctype="multipart/form-data">
           {% csrf_token %}
-          {% for field in form.offcanvas_fields %}
-              <div>{{ form.[field].label_tag }} {{ form[field] }}</div>
-          {% endfor %}
+          {% crispy form form.helper1 %}
       </form>
   </div>
 </div>
@@ -30,9 +28,7 @@
 <div class="main-form-section">
   <form method="POST" class="article-form" enctype="multipart/form-data">
       {% csrf_token %}
-      {% for field in form.main_fields %}
-          <div>{{ form.[field].label_tag }} {{ form[field] }}</div>
-      {% endfor %}
+      {% crispy form form.helper2 %}
       <button class="btn btn-outline-success" style="width:6rem" type="submit">Save</button>
   </form>
 </div>

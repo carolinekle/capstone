@@ -8,3 +8,5 @@ django-tinymce==4.1.0
 Whoosh==2.7.4
 django-haystack==3.3.0
 django-clearcache==1.2.1
+django-crispy-forms==2.3
+crispy-bootstrap5==2024.2
