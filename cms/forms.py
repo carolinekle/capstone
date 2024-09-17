@@ -5,7 +5,7 @@ from news.models import Article, Author, Image, Section, User, Like
 from .models import Homepage
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, Div, Field
-
+from crispy_bootstrap5.bootstrap5 import Switch
 
 class HomepageForm(forms.ModelForm):
     class Meta:
@@ -33,41 +33,50 @@ class HomepageForm(forms.ModelForm):
 
 class ArticleForm(forms.ModelForm):
     class Meta:
-        model = Article  
+        model = Article
         fields = ['content', 'section', 'headline', 'deck', 'main', 'byline', 'slug', 'url', 'date', 'is_published', 'updated_at', 'update_lang']
-
         widgets = {
-            'content': TinyMCE(),  
+            'content': TinyMCE(),
         }
 
-        def __init__(self, *args, **kwargs):
-            super(ArticleForm, self).__init__(*args, **kwargs)
-            self.helper1 = FormHelper()
-            self.helper1.form_method = 'post'
-            self.helper1.layout = Layout(
-                Div(
-                    Field('headline', css_class="form-control", style="max-width: 300px;", placeholder='Headline'),
-                    Field('byline', css_class="form-select", style="max-width:300px"),
-                    Field('deck', css_class="form-control", style="max-width: 300px;", placeholder='Deck'),
-                    Field('main', css_class="form-select", style="max-width:300px"),
-                    Field('content'),
-                    Field('is_published', template='bootstrap5/checkbox.html'),
-                    Submit('submit', 'Save')
-                )
-            )
+    def __init__(self, *args, **kwargs):
+        super(ArticleForm, self).__init__(*args, **kwargs)
 
-            self.helper2 = FormHelper()
-            self.helper2.form_tag = False
-            self.helper2.form_method = 'post'
-            self.helper2.layout = Layout(
-                Div(
-                    Field('section', css_class="form-select", style="max-width:300px"),
-                    Field('slug', css_class="form-control", style="max-width:300px"),
-                    Field('url', css_class="form-control", style="max-width:300px", placeholder='URL'),
-                    Field('updated_at', css_class="input-group", style="max-width:300px", type="date"),
-                    Field('update_lang', css_class="form-control", style="max-width: 300px;", placeholder='Update Language'),
-                )
+        self.helper1 = FormHelper()
+        self.helper1.form_method = 'post'
+        self.helper1.layout = Layout(
+            Div(
+                Field('headline', css_class="form-control", style="max-width: 300px;", placeholder='Headline'),
+                Field('byline', css_class="form-select", style="max-width:300px"),
+                Field('deck', css_class="form-control", style="max-width: 300px;", placeholder='Deck'),
+                Field('main', css_class="form-select", style="max-width:300px"),
+                Field('content'),
+                Switch('is_published'),
             )
+        )
+
+        self.helper2 = FormHelper()
+        self.helper2.form_tag = False
+        self.helper2.form_method = 'post'
+        self.helper2.layout = Layout(
+            Div(
+                Field('section', css_class="form-select", style="max-width:300px"),
+                Field('slug', css_class="form-control", style="max-width:300px"),
+                Field('url', css_class="form-control", style="max-width:300px", placeholder='URL'),
+                Field('date', css_class="input-group date", css_id="datepicker", style="max-width:300px"),
+                Field('updated_at', css_class="input-group", style="max-width:300px", type="date"),
+                Field('update_lang', css_class="form-control", style="max-width: 300px;", placeholder='Update Language'),
+            )
+        )
+        self.helper3=FormHelper()
+        self.helper3.form_tag=False
+        self.helper3.form_method = 'post'
+        self.helper3.layout = Layout(
+            Div(
+               Submit('submit','save') 
+            )
+        )
+
 
 class AuthorForm(forms.ModelForm):
     class Meta:

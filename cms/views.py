@@ -25,9 +25,6 @@ from haystack.query import SearchQuerySet
 
 
 def cms_dashboard(request):
-    search_content = request.GET.get('q')
-    if search_content:
-        return search(request, search_content)
     articles = Article.objects.all()
     return render(request, 'cms/dashboard.html', {
       'articles': articles
@@ -39,14 +36,20 @@ def create_article(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('cms_dashboard'))
+        else:
+            print(form.errors)
     else:
         form = ArticleForm()
-        context ={
-            'form':form, 
-            'helper1':form.helper1,
-            'helper2':form.helper2
-        }
+
+    context = {
+        'form': form, 
+        'helper1': form.helper1,
+        'helper2': form.helper2,
+        'helper3': form.helper3
+    }
+    
     return render(request, 'cms/article.html', context)
+
 
 def create_image(request):
     if request.method == 'POST':
@@ -56,7 +59,7 @@ def create_image(request):
             return HttpResponseRedirect(reverse('cms_dashboard'))
     else:
         form = ImageForm()
-    return render(request, 'cms/create-img.html', {
+    return render(request, 'cms/create_image.html', {
         'form': form,
     })
 
@@ -97,11 +100,11 @@ def edit_section(request, section_id):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('cms_dashboard'))
-        else:
-            form = SectionForm(instance=section)
-        return render(request, 'cms/section.html', {
-            'form': form
-            })
+    else:
+        form = SectionForm(instance=section)
+    return render(request, 'cms/section.html', {
+        'form': form
+        })
 
 def edit_author(request, author_id):
     author = get_object_or_404(Article, id=author_id)
@@ -128,11 +131,28 @@ def edit_article(request, article_id):
     return render(request, 'cms/article.html', {
         'form': form
         })
+def edit_author(request, author_id):
+    author = get_object_or_404(Author, id=author_id)
+    if request.method == 'POST':
+        form = AuthorForm(request.POST, request.FILES, instance=author)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('cms_dashboard'))
+    else:
+        form = AuthorForm(instance=author)
+    return render(request, 'cms/author_page.html',{
+        'form':form
+    })
+
+def get_query(request):
+    search_content = request.GET.get('q')
+    if search_content:
+        return search(request, search_content)
 
 def search(request, query):
     search_results = SearchQuerySet().filter(content=query)
     return render(request, 'cms/search.html', {
-        'search_results': search_results,
+        "search_results": search_results,
         "search_q":query
         })
 

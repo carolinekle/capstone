@@ -49,10 +49,10 @@
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                   </li>
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" name="q" action="{% url 'cms_dashboard' %}"  method="get" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex" action="{% url 'get_query' %}" method="get">
+                  <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                </form>                
               </div>
             </div>
           </nav>

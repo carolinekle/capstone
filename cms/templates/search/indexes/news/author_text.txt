@@ -1,1 +1,1 @@
-{{object.byliine}}
+{{object.byline}}
