@@ -6,28 +6,39 @@
 
 <div class="article-content m-3">
 
-  <a style="width:8rem" class="btn btn-outline-success" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-    More article options
-  </a>
+  <button class="btn btn-outline-success m-2" style="width:20rem;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+    See version history
+  </button>
 
   <form method="POST" class="article-form" enctype="multipart/form-data">
     {% csrf_token %}
     
     {% crispy form form.helper1 %}
 
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">More Article Options</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        {% crispy form form.helper2 %}
-      </div>
-    </div>
+    <img id="imagePreview" class="m-3" src="{{ image_url }}" style="display:block" alt="Image Preview" />
 
-    {% crispy form form.helper3 %}
+    {% crispy form form.helper2 %}
+
+    <button class="btn btn-outline-success m-2" style="width:6rem" type="submit">Save</button>
 </form>
 
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="list-group">
+      {% for h in article.history.all %}
+        <li class="list-comment-item"> {{ h.changed_by }} </li>
+        {{ h.changed_by }}
+        {{ h.comment }}
+      {% endfor %}
+      <li class="list-group-item">A</li>
+
+    </ul>
+  </div>
+</div>
 
 </div>
 {% endblock %}

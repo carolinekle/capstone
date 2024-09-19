@@ -15,10 +15,11 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     # edit
-    path("edit", views.edit_homepage, name="edit_homepage"),
-    path('edit/<int:section_id>/', views.edit_section, name="edit_section"),
-    path('edit/<int:article_id>/', views.edit_article, name='edit_article'),
-    path('edit/<int:author_id>', views.edit_author, name="edit_author"),
+    path("edit/homepage/", views.edit_homepage, name="edit_homepage"),
+    path('edit/section/<int:section_id>/', views.edit_section, name="edit_section"),
+    path('edit/article/<int:article_id>/', views.edit_article, name='edit_article'),
+    path('edit/author/<int:author_id>/', views.edit_author, name="edit_author"),
+    path('edit/image/<int:image_id>', views.edit_image, name="edit_image"),
     #create
     path('create_article/', views.create_article, name='create_article'),
     path('create_author', views.create_author, name="create_author"),

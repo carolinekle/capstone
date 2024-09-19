@@ -49,9 +49,7 @@ class ArticleForm(forms.ModelForm):
                 Field('headline', css_class="form-control", style="max-width: 300px;", placeholder='Headline'),
                 Field('byline', css_class="form-select", style="max-width:300px"),
                 Field('deck', css_class="form-control", style="max-width: 300px;", placeholder='Deck'),
-                Field('main', css_class="form-select", style="max-width:300px"),
-                Field('content'),
-                Switch('is_published'),
+                Field('main', css_class="form-select", style="max-width:300px", id="imageSelect", accept="image/*"),
             )
         )
 
@@ -60,20 +58,14 @@ class ArticleForm(forms.ModelForm):
         self.helper2.form_method = 'post'
         self.helper2.layout = Layout(
             Div(
+                Field('content'),
                 Field('section', css_class="form-select", style="max-width:300px"),
                 Field('slug', css_class="form-control", style="max-width:300px"),
                 Field('url', css_class="form-control", style="max-width:300px", placeholder='URL'),
-                Field('date', css_class="input-group date", css_id="datepicker", style="max-width:300px"),
+                Field('date', css_class="input-group date", id="datepicker", style="max-width:300px"),
                 Field('updated_at', css_class="input-group", style="max-width:300px", type="date"),
                 Field('update_lang', css_class="form-control", style="max-width: 300px;", placeholder='Update Language'),
-            )
-        )
-        self.helper3=FormHelper()
-        self.helper3.form_tag=False
-        self.helper3.form_method = 'post'
-        self.helper3.layout = Layout(
-            Div(
-               Submit('submit','save') 
+                Switch('is_published')
             )
         )
 
@@ -109,11 +101,18 @@ class AuthorForm(forms.ModelForm):
 class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ['image','caption']
+        fields = ['name','image','caption']
         widgets={
+            'name':TextInput(attrs={
+                'class':"form-control",
+                'style': 'max-width: 300px;',
+            }),
             'image':FileInput(attrs={
                 'type':"file",
-                'class':"form-control" 
+                'class':"form-control",
+                'name':"image",
+                'id':"imageInput",
+                'accept':"image/*"
             }),
             'caption':TextInput(attrs={
                 'class':"form-control",

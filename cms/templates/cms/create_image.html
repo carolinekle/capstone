@@ -6,11 +6,13 @@
 
 
 <div class="article-content m-3">
+
+  <img id="imagePreview" class="m-3" src="#" style="display:none"alt="Image Preview" />
   <form method="POST" class="article-form" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_div }}
 
-    <button class="btn btn-outline-success m-2" style="width:6rem" type="submit">Save</button>
+    <button class="btn btn-outline-success m-2" style="width:6rem;" type="submit">Save</button>
   </form>
 </div>
 

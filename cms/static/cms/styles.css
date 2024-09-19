@@ -96,3 +96,11 @@ width:700px
     flex-direction: column;
     align-self: center;
 }
+
+#imagePreview {
+
+    height: 500px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    display: none;
+}

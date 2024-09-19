@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.text import slugify 
 from tinymce.models import HTMLField
 from django.utils import timezone
+from django.templatetags.static import static
+from simple_history.models import HistoricalRecords 
 
 # Create your models here.
 
@@ -35,10 +37,13 @@ class Section(models.Model):
 
 
 class Image(models.Model):
+    name = models.TextField(max_length=50, null=True, blank=True)
     image = models.ImageField(max_length=2000, upload_to="static/news/images")
     caption = models.TextField(max_length=400, null=True, blank=True)
 
-
+    def get_image_url(self):
+        return self.image.url if self.image else static ('/media/static/news/GettyImages-985192218.jpg')
+    
 class Author(models.Model):
     byline = models.CharField(max_length=50, null=True)
     author_bio = HTMLField(max_length=2000)
@@ -69,6 +74,8 @@ class Article(models.Model):
     is_hero = models.BooleanField(default=False)  
     is_featured = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
+    history = HistoricalRecords()
+    changed_by = models.ForeignKey(User)
 
     def save(self, *args, **kwargs):
         if not self.url:

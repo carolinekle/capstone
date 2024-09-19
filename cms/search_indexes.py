@@ -1,5 +1,5 @@
 from haystack import indexes
-from news.models import Article, Section, Author
+from news.models import Article, Section, Author, Image
 
 
 class ArticleIndex(indexes.SearchIndex, indexes.Indexable):
@@ -19,3 +19,9 @@ class AuthorIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Author
+    
+class ImageIndex(indexes.SearchIndex, indexes.Indexable):
+    text=indexes.CharField(document=True, use_template=True)
+
+    def get_model(self):
+        return Image
