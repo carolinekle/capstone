@@ -30,6 +30,7 @@ class Subsection(models.Model):
 
 class Section(models.Model):
     section_name = models.CharField(max_length=50)
+    section_description = models.CharField(max_length=300, null=True, blank=True)
     section_url_name = models.SlugField(max_length=50, null=True, unique=True)
 
     def __str__(self):

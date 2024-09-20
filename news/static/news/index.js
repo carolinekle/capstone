@@ -1,94 +1,90 @@
 const followButton = document.querySelector('#follow')
-const headings=document.querySelector(".article").querySelectorAll("h2, h3, h4, h5")
+
 const likeButtons = document.querySelectorAll('#comment')
 
 
-const commentSubmitBtn = document.querySelector('.comment-submit-btn');
+const commentSubmitBtn = document.querySelector('.comment-submit-btn')
 
+const imgEl = document.querySelector('.hero-img')
+imgEl.addEventListener("load",  function() {
 
+    console.log(imgEl)
+        const rgb = getAverageRGB(imgEl);
 
-var rgb = getAverageRGB(document.querySelector('.hero-img'))
-document.body.style.backgroundColor = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+        document.body.style.backgroundColor = 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')'
+        const brightness = getBrightness(rgb)
+        const text = document.querySelectorAll(".hero-text")
 
-getImageBrightness(function(brightness) {
-
-    const text = document.querySelector(".hero-text");
-
-    text.classList.remove("link-dark");
-    text.classList.remove("link-light");
-
-    console.log(brightness);
-
-    if (brightness > 225 / 2) {
-      text.classList.remove("link-dark");
-      text.classList.add("link-light");
-
-    } else {
-      text.classList.remove("link-light");
-      text.classList.add("link-dark");
-    }
-  });
-
-
-
-
+text.forEach( item =>{
+        if (brightness > 80) {
+            console.log(item)
+            item.classList.remove("link-dark", "link-light")
+            item.classList.add("link-light")
+        } else {
+            item.classList.remove("link-dark", "link-light")
+            item.classList.add("link-dark")
+        }
+    })
+})
 
 function getAverageRGB(imgEl) {
-    
     var blockSize = 5, 
-        defaultRGB = {r:0,g:0,b:0}, 
+        defaultRGB = {r: 0, g: 0, b: 0}, 
         canvas = document.createElement('canvas'),
         context = canvas.getContext && canvas.getContext('2d'),
         data, width, height,
         i = -4,
         length,
-        rgb = {r:0,g:0,b:0},
+        rgb = {r: 0, g: 0, b: 0},
         count = 0;
-        
+
     if (!context) {
         return defaultRGB;
     }
-    
-    height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
-    width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
-    
-    context.drawImage(imgEl, 0, 0);
-    
+
+    height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height
+    width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width
+
+    context.drawImage(imgEl, 0, 0)
+
     try {
-        data = context.getImageData(0, 0, width, height);
-    } catch(e) {
-        /* security error, img on diff domain */alert('x');
+        data = context.getImageData(0, 0, width, height)
+    } catch (e) {
+    
+        console.error('Image loading error', e)
         return defaultRGB;
     }
-    
-    length = data.data.length;
-    
-    while ( (i += blockSize * 4) < length ) {
+
+    length = data.data.length
+
+    while ((i += blockSize * 4) < length) {
         ++count;
-        rgb.r += data.data[i];
-        rgb.g += data.data[i+1];
-        rgb.b += data.data[i+2];
+        rgb.r += data.data[i]
+        rgb.g += data.data[i + 1]
+        rgb.b += data.data[i + 2]
     }
-    
-    // ~~ used to floor values
-    rgb.r = ~~(rgb.r/count);
-    rgb.g = ~~(rgb.g/count);
-    rgb.b = ~~(rgb.b/count);
-    var brightness = Math.floor(rgb / (this.width * this.height));
-  
-    return brightness;
+
+    rgb.r = ~~(rgb.r / count)
+    rgb.g = ~~(rgb.g / count)
+    rgb.b = ~~(rgb.b / count)
+
+    return rgb;
 }
 
-console.log("headings:" + headings)
+function getBrightness(rgb) {
+    return Math.round((rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000)
+}
+
+const headings=document.querySelector(".article").querySelectorAll("h2, h3, h4, h5")
 if (headings.length > 0) {
     for (let i = 0; i < headings.length; i++) { 
-        headings[i].classList.add("text-danger");
+        headings[i].classList.add("text-danger")
     }
 }
 function getCookie(name){
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if(parts.length == 2) return parts.pop().split(';').shift();
+    const value = `; ${document.cookie}`
+    const parts = value.split(`; ${name}=`)
+    if(parts.length == 2) return parts.pop().split(';').shift()
 }
 
 
@@ -104,7 +100,7 @@ function followStatus() {
             }
         })
         .catch(error => {
-            console.error('Error fetching follow status:', error);
+            console.error('Error fetching follow status:', error)
         });
 }
 
@@ -149,7 +145,7 @@ if(likeButtons){
                 }
             })
             .catch(error => {
-                console.error('Error fetching like status:', error);
+                console.error('Error fetching like status:', error)
             });
     }
     
@@ -179,7 +175,7 @@ if(likeButtons){
                 }
             })
             .catch(error => {
-                console.error('Error liking/unliking:', error);
+                console.error('Error liking/unliking:', error)
             });
         });
     });
@@ -194,17 +190,16 @@ if(commentSubmitBtn){
 
     commentSubmitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const commentBody = document.getElementById('comment-body');
-        const text = commentBody.value;
-        const form = document.getElementById('comment-form');
-        const article_id = form.getAttribute('data-article-id');
+        const commentBody = document.getElementById('comment-body')
+        const text = commentBody.value
+        const form = document.getElementById('comment-form')
+        const article_id = form.getAttribute('data-article-id')
 
 
         console.log(article_id);  
         console.log(text)
 
 
-        console.log("CSRF Token: ", getCookie('csrftoken'));
         fetch(`/comment/${article_id}`, {
             method: 'POST',
             headers: {"Content-type": "application/json", "X-CSRFToken": getCookie("csrftoken")},
@@ -236,11 +231,11 @@ if(commentSubmitBtn){
                 </div>
             `;
 
-            document.querySelector('.comments').appendChild(newComment);
+            document.querySelector('.comments').appendChild(newComment)
 
-            commentBody.value = '';
+            commentBody.value = ''
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error))
     });
 }

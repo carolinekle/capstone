@@ -3,9 +3,6 @@ from django.forms import ModelForm, TextInput, FileInput, Select, DateInput, Che
 from tinymce.widgets import TinyMCE
 from news.models import Article, Author, Image, Section, User, Like
 from .models import Homepage
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, Div, Field
-from crispy_bootstrap5.bootstrap5 import Switch
 
 class HomepageForm(forms.ModelForm):
     class Meta:

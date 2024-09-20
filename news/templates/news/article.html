@@ -5,10 +5,10 @@
 
     <img class="hero-img" src="{{ article.main.image.url }}"> 
     <div id="hero-content" class="text-light">
-        <p><a class="link-light" href="#">{{ section.section_name }}</a></p>
-        <h1>{{ article.headline }}</h1>
-        <p>{{ article.deck }}</p>
-        <a class="link-light" href="#"><small>{{ article.byline }}</small></a>
+        <a class="hero-text" href="{% url 'section' article.section.section_url_name %}">{{ section.section_name }}</a>
+        <h1 class="hero-text">{{ article.headline }}</h1>
+        <p class="hero-text"> {{ article.deck }}</p>
+        <a class="hero-text" href="{% url 'author_page' article.byline.author_slug %}"><small>{{ article.byline }}</small></a>
     </div>
 </div>
 

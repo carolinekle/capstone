@@ -83,8 +83,17 @@
             {% block body %}
             {% endblock %}
         </div>
-        <div class = "footer text-light bg-danger">
-            <p>foo bar</p>
+        <div class = "footer text-light bg-danger" style="display: flex;flex-direction: column;height: 7rem; align-items: center;">
+
+        <ul class="display:flex"style="list-style-type: none;">
+          <li class="nav-item" style="display:inline">
+            <a class="nav-link link-light" aria-current="page">About</a>
+          </li>
+        <li style="display:inline"><a class="nav-link link-light" aria-current="page">Contact</a></li>
+          
+        </ul>
+        <hr class="border border-light border-1 opacity-75" style="width:90%">
+           <p> © Circa Company </p>
         </div>
     </body>
 </html>

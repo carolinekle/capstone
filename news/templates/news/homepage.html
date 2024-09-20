@@ -6,7 +6,7 @@
   <div class="hero-section">
     <img src="{{ hero_article.main.image.url }}" class="hero-img">
     <div id="hero-content">
-      <a class="hero-text link-light" href="{% url 'article_details' hero_article.section.section_url_name hero_article.url %}">
+      <a class="hero-text " href="{% url 'article_details' hero_article.section.section_url_name hero_article.url %}">
       <h1>{{ hero_article.headline }}</h1>
       <p>{{ hero_article.deck }}</p>
       </a>
