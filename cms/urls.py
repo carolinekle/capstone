@@ -26,6 +26,7 @@ urlpatterns = [
     path('create_section', views.create_section, name="create_section"),
     path('create_image/', views.create_image, name="create_image"),
     #manage
+    path('get_image_url/<int:image_id>/', views.get_image_url, name='get_image_url'),
     path("delete_article/<int:article_id>", views.delete_article, name="delete_article"),
     path("get_query", views.get_query, name="get_query"),
     path('delete/<int:article_id>/', views.delete_article, name='delete_article'),

@@ -2,62 +2,57 @@
 
 {% block body %}
 
-<h1 class="m-4">Dashboard</h1>
+<h1 class="heading">Dashboard</h1>
+<div class="d-flex" id="box">
 
-<div class="dash mx-auto">
-    <div class="btn-parent">
-      <button type="button" class="btn btn-outline-success btn-lg">
-        <a id="btn-hover" class="link-dark" href="{% url 'create_article' %}" style="color:">
-          Create New Article
+  <div class="cms-articles">
+
+    <h3>Articles</h3>
+      <div class="list-group ">
+      {% for article in articles %}
+        <a href="{% url 'edit_article' article.id %}" class="list-group-item list-group-item-action">
+          {{ article.headline }}
         </a>
-      </button>
-
-    </div>
-
-    <div class="btn-parent">
-      <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
-        <a id="btn-hover" class="link-dark"href="{% url 'edit_homepage' %}" style="">
-          Edit Homepage
-        </a>
-      </button>
-    </div>
-
-    <div class="btn-parent">
-      <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
-        <a id="btn-hover" class="link-dark"href="{% url 'create_author' %}" style="">
-          Create Author
-        </a>
-      </button>
-    </div>
-
-    <div class="btn-parent">
-      <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
-        <a id="btn-hover" class="link-dark"href="{% url 'create_section' %}" style="">
-          Create Section
-        </a>
-      </button>
-    </div>
-
-      <div class="btn-parent">
-        <button type="button" id="hover-parent"class="btn btn-outline-success btn-lg">
-          <a id="btn-hover" class="link-dark"href="{% url 'create_image' %}" style="">
-            Create Image
-          </a>
-        </button> 
+      {% endfor %}
+      
       </div>
-</div>
- 
-<div class="cms-articles" >
+  </div>
+    <div class="dash mx-auto rounded-3" style="align-items:center">
+        <div class="btn-parent">
+            <a class="btn btn-outline-success btn-lg" href="{% url 'create_article' %}" style="color:">
+              Create New Article
+            </a>
+        </div>
 
-<h3>Articles</h3>
-  <div class="list-group ">
-  {% for article in articles %}
-    <a href="{% url 'edit_article' article.id %}" class="list-group-item list-group-item-action">
-      {{ article.headline }}
-    </a>
-  {% endfor %}
-  
-  </div> 
+        <div class="btn-parent">
+            <a class="btn btn-outline-success btn-lg"href="{% url 'edit_homepage' %}" style="">
+              Edit Homepage
+            </a>
+        </div>
+
+        <div class="btn-parent">
+        
+            <a class="btn btn-outline-success btn-lg"href="{% url 'create_author' %}" style="">
+              Create Author
+            </a>
+
+        </div>
+
+        <div class="btn-parent">
+            <a class="btn btn-outline-success btn-lg" href="{% url 'create_section' %}" style="">
+              Create Section
+            </a>
+        </div>
+
+          <div class="btn-parent">
+              <a class="btn btn-outline-success btn-lg"href="{% url 'create_image' %}" style="">
+                Create Image
+              </a>
+          </div>
+
+    
+ 
+</div>
 {% comment %}   <ul>
     {% for article in articles %}
       <li>

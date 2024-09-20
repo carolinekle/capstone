@@ -8,6 +8,24 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </head>
     <body>
+      <div class="loader-div">
+        <span class="loader">
+          <span></span>
+          <span></span>
+        </span>
+      </div>
+      <script>
+        document.onreadystatechange = function() {
+            if (document.readyState !== "complete") {
+                document.querySelector(".loader-div").style.display = "block";
+                document.querySelector(".content").style.visibility = "hidden";
+            } else {
+                document.querySelector(".loader-div").style.display = "none";
+                document.querySelector(".content").style.visibility = "visible";
+            }
+        };
+        
+       </script>
         <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{% url 'homepage' %}">Circa</a>
@@ -61,7 +79,7 @@
 
 
 
-          <div class="content">
+          <div class="content" style="visible:hidden">
             {% block body %}
             {% endblock %}
         </div>

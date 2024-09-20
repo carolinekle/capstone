@@ -30,45 +30,73 @@ class HomepageForm(forms.ModelForm):
             }),
         }
 
-
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['content', 'section', 'headline', 'deck', 'main', 'byline', 'slug', 'url', 'date', 'is_published', 'updated_at', 'update_lang']
+        fields = ['headline','deck','section','byline','main','content', 'slug', 'url', 'date', 'is_published', 'updated_at', 'update_lang']
         widgets = {
-            'content': TinyMCE(),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(ArticleForm, self).__init__(*args, **kwargs)
-
-        self.helper1 = FormHelper()
-        self.helper1.form_method = 'post'
-        self.helper1.layout = Layout(
-            Div(
-                Field('headline', css_class="form-control", style="max-width: 300px;", placeholder='Headline'),
-                Field('byline', css_class="form-select", style="max-width:300px"),
-                Field('deck', css_class="form-control", style="max-width: 300px;", placeholder='Deck'),
-                Field('main', css_class="form-select", style="max-width:300px", id="imageSelect", accept="image/*"),
-            )
-        )
-
-        self.helper2 = FormHelper()
-        self.helper2.form_tag = False
-        self.helper2.form_method = 'post'
-        self.helper2.layout = Layout(
-            Div(
-                Field('content'),
-                Field('section', css_class="form-select", style="max-width:300px"),
-                Field('slug', css_class="form-control", style="max-width:300px"),
-                Field('url', css_class="form-control", style="max-width:300px", placeholder='URL'),
-                Field('date', css_class="input-group date", id="datepicker", style="max-width:300px"),
-                Field('updated_at', css_class="input-group", style="max-width:300px", type="date"),
-                Field('update_lang', css_class="form-control", style="max-width: 300px;", placeholder='Update Language'),
-                Switch('is_published')
-            )
-        )
-
+                'headline': TextInput(attrs={
+                    'class':"form-control",
+                    'style': 'max-width: 300px;',
+                    'placeholder': 'Headline'
+                    }),
+                'deck': TextInput(attrs={
+                    'class':"form-control",
+                    'style': 'max-width: 300px;',
+                    'placeholder': 'Deck'
+                    }),
+                'main':Select(attrs={
+                    'id':"id_main",
+                    'class':"form-select",
+                    'style':"max-width:300px"
+                }),
+                'byline':Select(attrs={
+                    'class':"form-select",
+                    'style':"max-width:300px"
+                }),
+                'content': TinyMCE(attrs={
+                    'id': 'content-field',
+                    'class':":form-control"
+                    }),
+                'section':Select(attrs={
+                    'class':"form-select",
+                    'style':"max-width:300px"
+                }),
+                'slug': TextInput(attrs={
+                    'class':"form-control",
+                    'style':"max-width:300px",
+                    }),
+                'url':TextInput(attrs={
+                    'class':"form-control",
+                    'style':"max-width: 300px",
+                    'placeholder':"URL"
+                }),
+                'date': DateInput(attrs={
+                    'class':"input-group rounded-1 border border-1 p-1",
+                    'style':"max-width: 300px",
+                    'type':"date"
+                }),
+                'is_published':CheckboxInput(attrs={
+                    'class':"form-check-input",
+                    'id':"flexCheckDefault",
+                    'type':"checkbox"
+                }),
+                'updated_at':DateInput(attrs={
+                    'class':"input-group rounded-1 border border-1 p-1",
+                    'style':"max-width: 300px",
+                    'type':"date"
+                }),
+                'update_lang':TextInput(attrs={
+                    'class':"form-control",
+                    'style': 'max-width: 300px;',
+                    'placeholder': 'Update Language'
+                }),
+                }
+        
+        def __init__(self, *args, **kwargs):
+            super(ArticleForm, self).__init__(*args, **kwargs)
+            images = Image.objects.all()
+            self.fields['main'].choices = [(image.pk, image.name) for image in images]
 
 class AuthorForm(forms.ModelForm):
     class Meta:

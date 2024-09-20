@@ -24,7 +24,7 @@ from simple_history.models import HistoricalRecords
 # Create your views here.
 
 #index
-def cms_dashboard(request):
+def cms_dashboard(request):       
     articles = Article.objects.order_by("-date")
     return render(request, 'cms/dashboard.html', {
       'articles': articles
@@ -36,22 +36,19 @@ def create_article(request):
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            history = form.history.all()
             return HttpResponseRedirect(reverse('cms_dashboard'))
         else:
-            print(form.errors)
+            return render(request, 'cms/error_page.html')
     else:
         form = ArticleForm()
-
-    context = {
-        'form': form, 
-        'helper1': form.helper1,
-        'helper2': form.helper2,
-    }
-    
-    return render(request, 'cms/article.html', context)
+    return render(request, 'cms/article.html', {
+        'form': form,
+    })
 
 def edit_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
+    history = article.history.all()
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
@@ -61,6 +58,7 @@ def edit_article(request, article_id):
         form = ArticleForm(instance=article)
     return render(request, 'cms/article.html', {
         'article':article,
+        'history':history,
         'form': form,
         'image_url':article.main.get_image_url()
         })
@@ -120,6 +118,13 @@ def edit_image(request, image_id):
     return render(request, 'cms/create_image.html', {
         'form': form
         })
+
+#get image url
+def get_image_url(request, image_id): 
+    image = get_object_or_404(Image, id=image_id)
+    url = image.get_image_url()
+    print(url)
+    return JsonResponse({'image_url': url})
 
 #section
 def create_section(request):

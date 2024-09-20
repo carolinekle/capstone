@@ -3,7 +3,7 @@
 {% block body %}
 
 
-<h1>Edit Homepage</h1>
+<h1 class="heading">Edit Homepage</h1>
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   {{ form.as_div }}

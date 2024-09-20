@@ -71,11 +71,11 @@ class Article(models.Model):
     section = models.ForeignKey(Section, null=True, on_delete=models.SET_NULL)
     updated_at = models.DateTimeField(blank=True, null=True)
     update_lang = models.CharField(max_length=50, blank=True, null=True)
-    is_hero = models.BooleanField(default=False)  
-    is_featured = models.BooleanField(default=False)
-    is_published = models.BooleanField(default=False)
+    is_hero = models.BooleanField(default=False, null=True)  
+    is_featured = models.BooleanField(default=False, null=True)
+    is_published = models.BooleanField(default=False, null=True)
     history = HistoricalRecords()
-    changed_by = models.ForeignKey(User)
+    changed_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.url:

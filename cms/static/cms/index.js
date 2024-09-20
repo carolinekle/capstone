@@ -15,20 +15,49 @@ tinymce.init({
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  let btnContainer = document.querySelector('.dash');
+/*   let btnContainer = document.querySelector('.dash');
 
   let error =document.querySelector('.errorlist')
-  const input = document.querySelector('#imageInput');  
+  const input = document.querySelector('#imageInput');   */
+  input = document.getElementById('id_main')
+  input.addEventListener('change', function() {
+  
+    const image_id = this.value;
+    console.log("id: "+image_id)
+    if (image_id) {
+      fetch(`/get_image_url/${image_id}/`)
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then(data => {
+          const imageUrl = data.image_url;
+          if (imageUrl) {
+              let img = document.createElement('img');
+              img.setAttribute('id', 'imagePreview');
+              img.style.display = "block";
+              img.classList.remove('m-2');
+              img.src = imageUrl;
+              input.insertAdjacentElement("beforebegin", img);
+          }
+      })
+      .catch(error => console.error('Error fetching image URL:', error));
+    }
+  })  
+
+})
+/* 
+
   let select =document.querySelector('#imageSelect')
-console.log("select", select)
+  console.log("select"+ select)
   select.addEventListener('change', function(event) {
  
     const selectedOption = event.target.selectedOptions[0];
     console.log(selectedOption)
-    const imagePreview = document.getElementById('imagePreview');
+    imageUrl = selectedOption.value
   
-    const imageUrl = selectedOption.getAttribute('data-image-url');
-    
     if (imageUrl) {
       imagePreview.src = imageUrl;
       imagePreview.style.display = 'block';
@@ -36,6 +65,7 @@ console.log("select", select)
       imagePreview.style.display = 'none';
     }
   });
+
 
 if(input){
   input.addEventListener('change', function(event) {
@@ -56,31 +86,7 @@ if(input){
     error.classList.add("alert alert-warning")
   }
   
-  btnContainer.addEventListener('mouseover', (event) => {
-    if (event.target.classList.contains('btn')) {
-      let parentDiv = event.target.closest('.btn-parent');
-      let relatedLink = parentDiv.querySelector('.btn-hover');
-  
-      if (relatedLink) {
-        relatedLink.classList.remove("link-dark");
-        relatedLink.classList.add("link-light");
-      }
-    }
-  });
-  
-  btnContainer.addEventListener('mouseout', (event) => {
-    if (event.target.classList.contains('btn')) {
-      let parentDiv = event.target.closest('.btn-parent');
-      let relatedLink = parentDiv.querySelector('.btn-hover');
-  
-      if (relatedLink) {
-        relatedLink.classList.remove("link-light");
-        relatedLink.classList.add("link-dark");
-      }
-    }
-  });
 
-  
-  
 });
 
+ */
