@@ -5,6 +5,7 @@ const likeButtons = document.querySelectorAll('#comment')
 
 const commentSubmitBtn = document.querySelector('.comment-submit-btn')
 
+/** hero image code*/
 const imgEl = document.querySelector('.hero-img')
 imgEl.addEventListener("load",  function() {
 
@@ -75,19 +76,20 @@ function getBrightness(rgb) {
     return Math.round((rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000)
 }
 
+/*headings*/ 
 const headings=document.querySelector(".article").querySelectorAll("h2, h3, h4, h5")
 if (headings.length > 0) {
     for (let i = 0; i < headings.length; i++) { 
         headings[i].classList.add("text-danger")
     }
 }
+
 function getCookie(name){
     const value = `; ${document.cookie}`
     const parts = value.split(`; ${name}=`)
     if(parts.length == 2) return parts.pop().split(';').shift()
 }
-
-
+/** AJAX */
 function followStatus() {
     let author_id = followButton.value;
     fetch(`/follow_status/${author_id}`)
@@ -130,7 +132,6 @@ if(followButton){
 
     })
 }
-
 
 if(likeButtons){
 
@@ -186,6 +187,7 @@ if(likeButtons){
         likeStatus(comment_id)
     });
 }
+
 if(commentSubmitBtn){
 
     commentSubmitBtn.addEventListener('click', (e) => {
@@ -232,7 +234,8 @@ if(commentSubmitBtn){
             `;
 
             document.querySelector('.comments').appendChild(newComment)
-
+            let alert=document.querySelector('.comment-alert').remove()
+                alert.remove()
             commentBody.value = ''
             }
         })

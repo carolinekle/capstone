@@ -34,6 +34,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Application definition
 
 INSTALLED_APPS = [
+    "django.contrib.sites",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,7 +49,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap5",
     "simple_history",
-    'django.contrib.sites', 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',  
@@ -70,6 +70,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True  
 
 
+AUTH_PROFILE_MODULE = 'news.Profile'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"

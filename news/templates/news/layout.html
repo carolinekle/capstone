@@ -69,10 +69,10 @@
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                   </li>
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" name ='q' action="{% url 'homepage' %}"  type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-light" type="submit">Search</button>
-                </form>
+                  <form class="d-flex" action="{% url 'get_query' %}" method="get">
+                    <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                  </form>    
               </div>
             </div>
           </nav>
@@ -84,15 +84,12 @@
             {% endblock %}
         </div>
         <div class = "footer text-light bg-danger" style="display: flex;flex-direction: column;height: 7rem; align-items: center;">
+          <ul class="nav justify-content-center">
+            <li class="nav-item"><a href="{% url 'about' %}" class="nav-link link-light">About</a></li>
+            <li class="nav-item"><a href="{% url 'contact' %}" class="nav-link link-light">Contact</a></li>
 
-        <ul class="display:flex"style="list-style-type: none;">
-          <li class="nav-item" style="display:inline">
-            <a class="nav-link link-light" aria-current="page">About</a>
-          </li>
-        <li style="display:inline"><a class="nav-link link-light" aria-current="page">Contact</a></li>
-          
-        </ul>
-        <hr class="border border-light border-1 opacity-75" style="width:90%">
+          </ul>
+        <hr class="border border-light border-1 opacity-75" style="width: 90%;margin: .5rem;">
            <p> © Circa Company </p>
         </div>
     </body>

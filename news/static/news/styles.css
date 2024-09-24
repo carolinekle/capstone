@@ -180,3 +180,22 @@ div.section-wrapper > ul{
 		transform: none;
 	}
 }
+
+
+.login-container{
+    margin: auto;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.register-container{
+    margin: auto;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}

@@ -20,10 +20,6 @@ from cms.models import Homepage
 # Create your views here.
              
 def index(request):
-    search_article = request.GET.get('q')
-    if search_article:
-        return search(request, search_article)
-
     homepage = Homepage.objects.latest('date_created')
 
     featured_articles = homepage.featured_articles.all()
@@ -187,8 +183,8 @@ def login_view(request):
     if request.method == "POST":
 
         # Attempt to sign user in
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get["username"]
+        password = request.POST.get["password"]
         user = authenticate(request, username=username, password=password)
 
         # Check if authentication successful
@@ -210,7 +206,12 @@ def follow_status(request, author_id):
         return JsonResponse({"following": existing_follower})
     else:
         return JsonResponse({"following": False})
-    
+
+def get_query(request, query):
+    search_article = request.GET.get('q')
+    if search_article:
+        return search(request, search_article)
+
 def search(request, search_q):
     search_results = Article.objects.filter(Q(headline__icontains=search_q) | Q(content__icontains=search_q))
     articles = Paginator(search_results, 10)
@@ -221,6 +222,12 @@ def search(request, search_q):
         "search_q":search_q,
         "page_obj":page_obj
     })
+
+def about(request):
+    return render(request, 'news/about.html')
+
+def contact(request):
+    return render(request, 'news/contact.html')
 
 def follow(request, author_id):
     if request.method == "POST":
@@ -240,11 +247,9 @@ def follow(request, author_id):
     elif json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("homepage"))
-
 
 def register(request):
     if request.method == "POST":
