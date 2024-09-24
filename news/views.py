@@ -12,6 +12,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import timezone
+from allauth.account.views import SignupView, LoginView
 
 from newsapi import NewsApiClient
 
@@ -76,7 +77,6 @@ def comment(request, article_id):
             return JsonResponse({"error": "Comment text missing"}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
-
 
 def like_status(request, comment_id):
     if request.user.is_authenticated:
@@ -179,25 +179,6 @@ def profile(request, user_username):
         'page_obj':page_obj
     })
 
-def login_view(request):
-    if request.method == "POST":
-
-        # Attempt to sign user in
-        username = request.POST.get["username"]
-        password = request.POST.get["password"]
-        user = authenticate(request, username=username, password=password)
-
-        # Check if authentication successful
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("homepage"))
-        else:
-            return render(request, "news/login.html", {
-                "message": "Invalid username and/or password."
-            })
-    else:
-        return render(request, "news/login.html")
-    
 def follow_status(request, author_id):
     if request.user.is_authenticated:
         following = request.user
@@ -246,33 +227,3 @@ def follow(request, author_id):
             return JsonResponse({"message":"followed"})
     elif json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON data"}, status=400)
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("homepage"))
-
-def register(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-
-        # Ensure password matches confirmation
-        password = request.POST["password"]
-        confirmation = request.POST["confirmation"]
-        if password != confirmation:
-            return render(request, "news/register.html", {
-                "message": "Passwords must match."
-            })
-
-        # Attempt to create new user
-        try:
-            user = User.objects.create_user(username, email, password)
-            user.save()
-        except IntegrityError:
-            return render(request, "news/register.html", {
-                "message": "Username already taken."
-            })
-        login(request, user)
-        return HttpResponseRedirect(reverse("homepage"))
-    else:
-        return render(request, "news/register.html")
