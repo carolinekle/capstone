@@ -47,6 +47,7 @@ sqlparse==0.4.4
 threadpoolctl==3.1.0
 tifffile==2023.4.12
 typing_extensions==4.12.2
-urllib3==2.2.2
 whitenoise==6.7.0
 Whoosh==2.7.4
+boto3==1.35.51
+django-storages==1.14.4
