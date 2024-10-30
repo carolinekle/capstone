@@ -39,7 +39,7 @@ class Section(models.Model):
 
 class Image(models.Model):
     name = models.TextField(max_length=50, null=True, blank=True)
-    image = models.ImageField(max_length=2000, upload_to="static/news/images")
+    image = models.ImageField(max_length=2000, upload_to="media/news/images")
     caption = models.TextField(max_length=400, null=True, blank=True)
 
     def get_image_url(self):
