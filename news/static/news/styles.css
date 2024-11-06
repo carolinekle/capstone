@@ -7,7 +7,7 @@ body{
 
 .hero-section {
     position: relative; 
-    max-width: 100%;
+    width: 100% !important;
     max-height: 100vh;
     margin: 0;  
     padding: 0;
