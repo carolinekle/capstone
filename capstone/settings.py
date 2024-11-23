@@ -15,6 +15,7 @@ DEBUG = False
 # Properly load ALLOWED_HOSTS from .env
 ALLOWED_HOSTS = [
     'cms-version1-0.onrender.com',
+    'news-version1-0.onrender.com',
     'localhost', 
     '127.0.0.1',
 ]
@@ -120,6 +121,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "capstone.wsgi.application"
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
