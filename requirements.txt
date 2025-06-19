@@ -37,7 +37,7 @@ PyScreeze==0.1.28
 python-dotenv==1.0.1
 pytweening==1.0.5
 PyWavelets==1.4.1
-pyxelate @ git+https://github.com/sedthh/pyxelate.git@ae2de9249d11063d0c1563b8e30a634c7d07faf8
+
 requests==2.32.3
 rubicon-objc==0.4.6
 scikit-image==0.21.0
