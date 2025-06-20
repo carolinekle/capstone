@@ -2,8 +2,9 @@
 
 {% block body %}
 <div class="hero-section">
-
-    <img class="hero-img" src="{{ article.main.image.url }}"> 
+    <img class="hero-img" src="{{ article.main.image.url }}" crossorigin="anonymous">
+    <!--  NOTE: for the dynamic text color to work, you must also configure your object storage (e.g., DigitalOcean Spaces)
+            to allow cross-origin requests. Set the 'Access-Control-Allow-Origin' header to '*' or your domain name. -->
     <div id="hero-content" class="text-light">
         <a class="hero-text" href="{% url 'section' article.section.section_url_name %}">{{ section.section_name }}</a>
         <h1 class="hero-text">{{ article.headline }}</h1>
