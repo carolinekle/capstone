@@ -47,7 +47,12 @@
                   </li>
                 </ul>
                 <form class="d-flex" action="{% url 'get_query' %}" method="get">
-                  <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+                  <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{ search_q|default:'' }}">
+                  <select class="form-select me-2" name="type" style="max-width: 10rem;">
+                    <option value="" {% if not search_type %}selected{% endif %}>All Articles</option>
+                    <option value="article" {% if search_type == 'article' %}selected{% endif %}>Article</option>
+                    <option value="author" {% if search_type == 'author' %}selected{% endif %}>Author</option>
+                  </select>
                   <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>                
               </div>

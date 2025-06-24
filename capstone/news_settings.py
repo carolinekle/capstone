@@ -5,3 +5,5 @@ from .settings import *
 
 ROOT_URLCONF = 'news.urls'
 ALLOWED_HOSTS = ['*']
+
+

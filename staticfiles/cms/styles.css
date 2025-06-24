@@ -106,3 +106,17 @@ display: block;
 .heading{
     margin: 48px 1rem 0 48px;
 }
+
+/* Dashboard button styles */
+.btn-parent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-parent .btn {
+    width: 100%;
+    min-width: 180px;
+    text-align: center;
+    white-space: nowrap;
+}

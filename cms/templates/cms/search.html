@@ -2,8 +2,86 @@
 
 {% block body %}
 {% load custom_filters %}
-<h1 class="heading">Results for "{{ search_q }}"</h4>
-<div class="cms-articles">
+
+<h2 class="text-center my-4">Results for "{{ search_q }}" {% if search_type %}in {{ search_type|title }}{% endif %}</h2>
+<div class="container d-flex justify-content-center my-4">
+  <div class="row w-100 justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="list-group" style="max-width: 600px; margin: 0 auto;">
+        {% for result in page_obj %}
+          {% if search_type == "author" %}
+            <a href="{% url 'edit_author' result.id %}" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ result.byline }}</h6>
+              </div>
+              <div class="mb-1">
+                <span class="badge bg-info me-2">Author</span>
+                <span class="badge bg-secondary">ID: {{ result.id }}</span>
+              </div>
+              <small class="text-muted">{{ result.author_bio }}</small>
+            </a>
+          {% else %}
+            <a href="{% url 'edit_article' result.id %}" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ result.headline }}</h6>
+                <small class="text-muted">{{ result.date|date:"M d, Y" }}</small>
+              </div>
+              <div class="mb-1">
+                <span class="badge bg-secondary me-2">{{ result.slug }}</span>
+                {% if result.byline %}
+                  <span class="badge bg-info">{{ result.byline.byline }}</span>
+                {% else %}
+                  <span class="badge bg-warning">No Author</span>
+                {% endif %}
+                {% if result.is_published %}
+                  <span class="badge bg-success">Published</span>
+                {% else %}
+                  <span class="badge bg-danger">Draft</span>
+                {% endif %}
+              </div>
+            </a>
+          {% endif %}
+        {% empty %}
+          <div class="list-group-item text-center text-muted">
+            No results found.
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pagination d-flex justify-content-center my-3">
+    <nav aria-label="Search results pagination">
+      <ul class="pagination pagination-success">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link bg-success text-white border-success" href="?q={{ search_q }}&type={{ search_type }}&page=1">&laquo; First</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link bg-success text-white border-success" href="?q={{ search_q }}&type={{ search_type }}&page={{ page_obj.previous_page_number }}">Previous</a>
+          </li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <li class="page-item active"><span class="page-link bg-success text-white border-success">{{ num }}</span></li>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item"><a class="page-link bg-success text-white border-success" href="?q={{ search_q }}&type={{ search_type }}&page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link bg-success text-white border-success" href="?q={{ search_q }}&type={{ search_type }}&page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link bg-success text-white border-success" href="?q={{ search_q }}&type={{ search_type }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+</div>
+
+{% comment %} <div class="cms-articles">
   <div class="list-group">
     {% for result in search_results %}
     {% with class_name=result.object|to_class_name|lower %}
@@ -11,7 +89,7 @@
         {{ class_name|capfirst }} – {{ result.object }}
       </a>
     {% endwith %}
-  {% endfor %}
+  {% endfor %} {% endcomment %}
   
 </div>
 

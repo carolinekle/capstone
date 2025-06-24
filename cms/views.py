@@ -187,16 +187,23 @@ def edit_homepage(request):
 #search
 @login_required
 def get_query(request):
-    search_content = request.GET.get('q')
-    if search_content:
-        return search(request, search_content)
+    search_q = request.GET.get('q', '')
+    search_type = request.GET.get('type', '')
 
-def search(request, query):
-    search_results = SearchQuerySet().filter(content=query)
+    if search_type == 'author':
+        results = Author.objects.filter(Q(byline__icontains=search_q) | Q(author_bio__icontains=search_q))
+    else:  # default to article
+        results = Article.objects.filter(Q(headline__icontains=search_q) | Q(content__icontains=search_q))
+
+    paginator = Paginator(results, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'cms/search.html', {
-        "search_results": search_results,
-        "search_q":query
-        })
+        'page_obj': page_obj,
+        'search_q': search_q,
+        'search_type': search_type,
+    })
 
 #delete
 @login_required
