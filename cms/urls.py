@@ -13,7 +13,8 @@ urlpatterns = [
     path('', views.cms_dashboard, name='cms_dashboard'),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
-    path("register", views.register, name="register"),
+    path("create_user", views.create_user, name="create_user"),
+    path("list_users", views.list_users, name="list_users"),
     # edit
     path("edit/homepage/", views.edit_homepage, name="edit_homepage"),
     path('edit/section/<int:section_id>/', views.edit_section, name="edit_section"),

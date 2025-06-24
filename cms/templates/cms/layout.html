@@ -30,19 +30,19 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
                 {% endif %}
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown
+                      Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      {% if user.is_superuser %}
+                      <li><a class="dropdown-item" href="{% url 'create_user' %}">Create User</a></li>
+                      <li><a class="dropdown-item" href="{% url 'list_users' %}">List Users</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                      {% endif %}
+                      <li><a class="dropdown-item" href="{% url 'cms_dashboard' %}">Dashboard</a></li>
+                      <li><a class="dropdown-item" href="/admin/">Django Admin</a></li>
                     </ul>
                   </li>
                 </ul>

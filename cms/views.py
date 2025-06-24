@@ -13,7 +13,7 @@ from django.contrib.staticfiles.apps import StaticFilesConfig
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from news.models import Article, User, Image, Author, Section, User
+from news.models import Article, User, Image, Author, Section
 from .models import Homepage
 from .forms import ArticleForm, HomepageForm, AuthorForm, ImageForm, SectionForm
 from django.db.models import Q
@@ -24,13 +24,23 @@ from simple_history.models import HistoricalRecords
 # Create your views here.
 
 #index
+@login_required
 def cms_dashboard(request):       
-    articles = Article.objects.order_by("-date")
+    # Get articles with author information and pagination
+    articles_list = Article.objects.select_related('byline').order_by("-date")
+    
+    # Pagination
+    paginator = Paginator(articles_list, 20)  # Show 20 articles per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     return render(request, 'cms/dashboard.html', {
-      'articles': articles
-      })
+        'articles': page_obj,
+        'page_obj': page_obj
+    })
 
 #article
+@login_required
 def create_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
@@ -46,6 +56,7 @@ def create_article(request):
         'form': form,
     })
 
+@login_required
 def edit_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     history = article.history.all()
@@ -64,6 +75,7 @@ def edit_article(request, article_id):
         })
 
 #author
+@login_required
 def create_author(request):
     if request.method == 'POST':
         image_form = ImageForm(request.POST, request.FILES )
@@ -80,6 +92,7 @@ def create_author(request):
         'image_form':image_form
         })
 
+@login_required
 def edit_author(request, author_id):
     author = get_object_or_404(Author, id=author_id)
     if request.method == 'POST':
@@ -94,6 +107,7 @@ def edit_author(request, author_id):
     })
 
 #image
+@login_required
 def create_image(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
@@ -106,6 +120,7 @@ def create_image(request):
         'form': form,
     })
 
+@login_required
 def edit_image(request, image_id):
     image = get_object_or_404(Image, id=image_id)
     if request.method =="POST":
@@ -120,6 +135,7 @@ def edit_image(request, image_id):
         })
 
 #get image url
+@login_required
 def get_image_url(request, image_id): 
     image = get_object_or_404(Image, id=image_id)
     url = image.get_image_url()
@@ -127,6 +143,7 @@ def get_image_url(request, image_id):
     return JsonResponse({'image_url': url})
 
 #section
+@login_required
 def create_section(request):
     if request.method == 'POST':
         form = SectionForm(request.POST, request.FILES)
@@ -139,6 +156,7 @@ def create_section(request):
         'form': form,
         })
 
+@login_required
 def edit_section(request, section_id):
     section = get_object_or_404(Section, id=section_id)
     if request.method =="POST":
@@ -153,6 +171,7 @@ def edit_section(request, section_id):
         })
 
 #homepage
+@login_required
 def edit_homepage(request):
     if request.method == 'POST':
         form = HomepageForm(request.POST, request.FILES)
@@ -166,6 +185,7 @@ def edit_homepage(request):
         })
 
 #search
+@login_required
 def get_query(request):
     search_content = request.GET.get('q')
     if search_content:
@@ -179,6 +199,7 @@ def search(request, query):
         })
 
 #delete
+@login_required
 def delete_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     if request.method == 'POST':
@@ -212,5 +233,62 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("cms_dashboard"))
 
-def register(request):
-    return redirect(reverse('cms_dashboard'))
+@login_required
+def create_user(request):
+    # Only allow superusers to create users
+    if not request.user.is_superuser:
+        return HttpResponseRedirect(reverse("cms_dashboard"))
+    
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        is_staff = request.POST.get("is_staff") == "on"
+        is_superuser = request.POST.get("is_superuser") == "on"
+        
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            return render(request, "cms/create_user.html", {
+                "message": "Username already taken.",
+                "form_data": request.POST
+            })
+        
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            return render(request, "cms/create_user.html", {
+                "message": "Email already taken.",
+                "form_data": request.POST
+            })
+        
+        try:
+            # Create the user
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                is_staff=is_staff,
+                is_superuser=is_superuser
+            )
+            
+            return render(request, "cms/create_user.html", {
+                "success_message": f"User '{username}' created successfully!"
+            })
+            
+        except Exception as e:
+            return render(request, "cms/create_user.html", {
+                "message": f"Error creating user: {str(e)}",
+                "form_data": request.POST
+            })
+    
+    return render(request, "cms/create_user.html")
+
+@login_required
+def list_users(request):
+    # Only allow superusers to view user list
+    if not request.user.is_superuser:
+        return HttpResponseRedirect(reverse("cms_dashboard"))
+    
+    users = User.objects.all().order_by('username')
+    return render(request, "cms/list_users.html", {
+        'users': users
+    })

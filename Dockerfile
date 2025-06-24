@@ -20,4 +20,3 @@ EXPOSE 8001
 
 # Command to run the application
 CMD ["gunicorn", "capstone.wsgi:application", "--bind", "0.0.0.0:8000"]
-
