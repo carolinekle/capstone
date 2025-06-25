@@ -11,7 +11,7 @@
 
     <div class="register-container" style="margin:auto;">
         <h2 class="text-light" style="text-align:center;"> Register</h2>
-    <form action="{% url 'register' %}" method="post" style="display: flex;flex-direction: column;justify-content: space-around;height: 200px;">
+    <form action="{% url 'account_signup' %}" method="post" style="display: flex;flex-direction: column;justify-content: space-around;height: 200px;">
         {% csrf_token %}
 
         <div class="input-group">
@@ -35,7 +35,7 @@
 
     <div>
         <small class="text-light">Already have an account? </small>
-        <a class="link-light" href="{% url 'login' %}">Log In here.</a>
+        <a class="link-light" href="{% url 'account_login' %}">Log In here.</a>
     </div>
 </div>
 {% endblock %}

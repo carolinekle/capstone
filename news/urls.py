@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/clearcache/', include('clearcache.urls')),
     path("admin/", admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path("accounts/", include("django.contrib.auth.urls")),
     path("", views.index, name="homepage"),
     path('tinymce/', include('tinymce.urls')),
     path("section/<str:section_url_name>", views.section, name="section"),

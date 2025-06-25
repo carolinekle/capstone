@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Access environment variables
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
-DEBUG = False
+DEBUG = True
 
 # Properly load ALLOWED_HOSTS from .env
 ALLOWED_HOSTS = [
