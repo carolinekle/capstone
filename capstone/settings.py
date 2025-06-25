@@ -15,12 +15,32 @@ DEBUG = False
 
 # Properly load ALLOWED_HOSTS from .env
 ALLOWED_HOSTS = [
+
     'cms-version1-0.onrender.com',
     'news-version1-0.onrender.com',
     'localhost', 
     '127.0.0.1',
+    'glitch-cms.motherboard.live',
+    'news.motherboard.live'
 ]
 
+# Add CSRF_TRUSTED_ORIGINS (required for Django 4.0+)
+CSRF_TRUSTED_ORIGINS = [
+
+    'https://cms-version1-0.onrender.com',
+    'https://news-version1-0.onrender.com',
+    'https://glitch-cms.motherboard.live',
+    'https://news.motherboard.live',
+    'http://localhost',
+    'http://127.0.0.1',
+]
+
+# Additional CSRF settings that might help
+
+CSRF_COOKIE_SECURE = True  # Set to False if not using HTTPS
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_USE_SESSIONS = False
 
 # Application definition
 
