@@ -5,7 +5,7 @@ const likeButtons = document.querySelectorAll('#comment')
 
 const commentSubmitBtn = document.querySelector('.comment-submit-btn')
 
-/** hero image code*/
+
 const imgEl = document.querySelector('.hero-img')
 imgEl.addEventListener("load",  function() {
 
@@ -89,7 +89,7 @@ function getCookie(name){
     const parts = value.split(`; ${name}=`)
     if(parts.length == 2) return parts.pop().split(';').shift()
 }
-/** AJAX */
+
 function followStatus() {
     let author_id = followButton.value;
     fetch(`/follow_status/${author_id}`)
@@ -241,4 +241,46 @@ if(commentSubmitBtn){
         })
         .catch(error => console.error('Error:', error))
     });
+}
+
+
+if (document.getElementById('contact-form')) {
+  // Load EmailJS if not already loaded (for safety in dev)
+  if (typeof emailjs === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    script.onload = initEmailJSContactForm;
+    document.body.appendChild(script);
+  } else {
+    initEmailJSContactForm();
+  }
+
+  function initEmailJSContactForm() {
+        console.log('EmailJS User ID:', window.EMAILJS_USER_ID);
+    console.log('EmailJS Service ID:', window.EMAILJS_SERVICE_ID);
+    console.log('EmailJS Template ID:', window.EMAILJS_TEMPLATE_ID);
+    
+    if (!window.EMAILJS_USER_ID || !window.EMAILJS_SERVICE_ID || !window.EMAILJS_TEMPLATE_ID) {
+        console.error('EmailJS configuration missing!');
+        return;
+    }
+    emailjs.init(window.EMAILJS_USER_ID); 
+    document.getElementById('contact-form')
+        .addEventListener('submit', function(e) {
+            e.preventDefault();
+            emailjs.sendForm(
+                window.EMAILJS_SERVICE_ID,    
+                window.EMAILJS_TEMPLATE_ID,  
+                this,
+                window.EMAILJS_USER_ID
+            )
+            .then(() => {
+                document.getElementById('contact-success').classList.remove('d-none');
+            })
+            .catch(err => {
+                document.getElementById('contact-error').classList.remove('d-none');
+                console.error(err);
+            });
+        });
+    }
 }

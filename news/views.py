@@ -208,7 +208,11 @@ def about(request):
     return render(request, 'news/about.html')
 
 def contact(request):
-    return render(request, 'news/contact.html')
+    return render(request, 'news/contact.html',{
+        'EMAILJS_USER_ID': settings.EMAILJS_USER_ID,
+        'EMAILJS_SERVICE_ID': settings.EMAILJS_SERVICE_ID,
+        'EMAILJS_TEMPLATE_ID': settings.EMAILJS_TEMPLATE_ID,
+    })
 
 def follow(request, author_id):
     if request.method == "POST":

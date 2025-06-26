@@ -6,12 +6,20 @@ import sys
 load_dotenv()
 
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Access environment variables
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
-DEBUG = True
+
+EMAILJS_USER_ID = os.environ.get("EMAILJS_USER_ID")
+EMAILJS_SERVICE_ID = os.environ.get("EMAILJS_SERVICE_ID")
+EMAILJS_TEMPLATE_ID = os.environ.get("EMAILJS_TEMPLATE_ID")
+
+
+DEBUG = False
 
 # Properly load ALLOWED_HOSTS from .env
 ALLOWED_HOSTS = [
@@ -38,7 +46,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Additional CSRF settings that might help
 
 CSRF_COOKIE_SECURE = True  # Set to False if not using HTTPS
-CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_USE_SESSIONS = False
 
@@ -82,6 +90,7 @@ AWS_S3_ENDPOINT_URL = f'https://{os.getenv("DO_SPACES_REGION")}.digitaloceanspac
 
 MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.{os.getenv("DO_SPACES_REGION")}.digitaloceanspaces.com/'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_QUERYSTRING_AUTH = True
 
 
 

@@ -1,0 +1,96 @@
+{% extends "news/layout.html" %}
+
+{% block body %}
+
+<script>
+    const EMAILJS_CONFIG = {
+        USER_ID: '4IlhO1MCN_XcFE5oQ',
+        SERVICE_ID: 'service_8nlsj13',
+        TEMPLATE_ID: 'template_xck5gnd'
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contact-form');
+        
+        if (contactForm && typeof emailjs !== 'undefined') {
+            console.log('Contact form found, initializing EmailJS...');
+
+            emailjs.init(EMAILJS_CONFIG.USER_ID);
+            console.log('EmailJS initialized successfully');
+
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('Form submitted, sending email...');
+
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+
+                document.getElementById('contact-success').classList.add('d-none');
+                document.getElementById('contact-error').classList.add('d-none');
+
+                emailjs.sendForm(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    this,
+                    EMAILJS_CONFIG.USER_ID
+                )
+                .then(() => {
+                    console.log('Email sent successfully!');
+                    document.getElementById('contact-success').classList.remove('d-none');
+                    contactForm.reset();
+                })
+                .catch(err => {
+                    console.error('Email send failed:', err);
+                    document.getElementById('contact-error').classList.remove('d-none');
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalText;
+                });
+            });
+
+            console.log('Contact form event listener added');
+        } else {
+            if (!contactForm) {
+                console.log('Contact form not found');
+            }
+            if (typeof emailjs === 'undefined') {
+                console.error('EmailJS library not loaded!');
+            }
+        }
+    });
+</script>
+
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow-lg p-4 w-100" style="max-width: 500px; border: 1px solid #dc3545;">
+    <h2 class="text-center text-dark mb-4">Contact Us</h2>
+    <form  id="contact-form">
+      <div class="mb-3">
+        <label for="name" class="form-label text-dark">Your Name</label>
+        <input type="text" class="form-control bg-dark text-light border-danger" id="name" name="name" placeholder="Enter your name" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label text-dark">Your Email</label>
+        <input type="email" class="form-control bg-dark text-light border-danger" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label text-dark">Message</label>
+        <textarea class="form-control bg-dark text-light border-danger" id="message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
+      </div>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-danger">Send Message</button>
+      </div>
+      <div id="contact-success" class="alert alert-success mt-3 d-none" role="alert">
+        Your message has been sent!
+      </div>
+      <div id="contact-error" class="alert alert-danger mt-3 d-none" role="alert">
+        There was an error sending your message. Please try again.
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

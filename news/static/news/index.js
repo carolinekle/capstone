@@ -5,7 +5,7 @@ const likeButtons = document.querySelectorAll('#comment')
 
 const commentSubmitBtn = document.querySelector('.comment-submit-btn')
 
-/** hero image code*/
+
 const imgEl = document.querySelector('.hero-img')
 imgEl.addEventListener("load",  function() {
 
@@ -89,7 +89,7 @@ function getCookie(name){
     const parts = value.split(`; ${name}=`)
     if(parts.length == 2) return parts.pop().split(';').shift()
 }
-/** AJAX */
+
 function followStatus() {
     let author_id = followButton.value;
     fetch(`/follow_status/${author_id}`)
