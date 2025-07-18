@@ -32,3 +32,9 @@ jobs:
         tags: |
           cklewi/capstone-news:latest
           cklewi/capstone-news:${{ github.sha }}
+    
+    - name: Redeploy News Service on Render
+      run: |
+        curl -X POST ${{ secrets.RENDER_NEWS_DEPLOY_HOOK }} \
+          -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}' \
+          -H 'Accept: application/json'
