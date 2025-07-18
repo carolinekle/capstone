@@ -1,4 +1,4 @@
-name: CMS Docker Deploy
+name: News Docker Deploy
 
 on:
   push:
